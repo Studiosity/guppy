@@ -9,7 +9,7 @@ case "$op" in
 	cat lib/katex/katex-modified.min.css style/guppy.css > build/guppy-default.min.css
 	cat lib/katex/katex-modified.min.css style/guppy.css style/osk.css > build/guppy-default-osk.min.css
 	cp -r lib/katex/fonts build
-	cp -r lib/icons/ build
+	cp -r lib/icons/ build/icons
 	;;
     "deploy")
 	npm run-script build
@@ -20,23 +20,23 @@ case "$op" in
     "build-final")
 	[[ ! -d build ]] && mkdir build
 	./node_modules/.bin/browserify src/guppy.js --standalone Guppy | tee build/guppy.js | ./node_modules/.bin/uglifyjs --mangle --beautify ascii_only=true,beautify=false > build/guppy.min.js
-	./node_modules/.bin/browserify src/osk.js --standalone GuppyOSK | ./node_modules/.bin/uglifyjs --mangle --beautify ascii_only=true,beautify=false > build/guppy_osk.js
+	./node_modules/.bin/browserify src/osk.js --standalone GuppyOSK | tee build/guppy_osk.js | ./node_modules/.bin/uglifyjs --mangle --beautify ascii_only=true,beautify=false > build/guppy_osk.min.js
 	./node_modules/.bin/uglifycss lib/katex/katex-modified.min.css > build/guppy-none.min.css
 	./node_modules/.bin/uglifycss lib/katex/katex-modified.min.css style/osk.css > build/guppy-none-osk.min.css
 	./node_modules/.bin/uglifycss lib/katex/katex-modified.min.css style/guppy.css > build/guppy-default.min.css
 	./node_modules/.bin/uglifycss lib/katex/katex-modified.min.css style/guppy.css style/osk.css > build/guppy-default-osk.min.css
 	cp -r lib/katex/fonts build
-	cp -r lib/icons/ build
-	cp -r sym/ build
+	cp -r lib/icons/ build/icons
+	cp -r sym/ build/sym
 	;;
     "build-test")
 	mkdir test/static/build 2>/dev/null
 	rm test/static/build/* 2>/dev/null
 	./node_modules/.bin/browserify -t browserify-istanbul src/guppy.js -o test/static/build/guppy_test.js --standalone Guppy
 	cat lib/katex/katex-modified.min.css style/guppy.css > test/static/build/guppy-test.min.css
-	cp -r sym/symbols.json test/static/build/
+	cp -r sym/symbols.json test/static/build/sym
 	cp -r lib/katex/fonts test/static/build/
-	cp -r lib/icons/ test/static/build/
+	cp -r lib/icons/ test/static/build/icons
 	;;
     "test")
 	cd test
