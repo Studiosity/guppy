@@ -1,21 +1,28 @@
 .guppy_active {
-    border: 2px solid black;
+    border-bottom: 1px solid #D8DEE4;
     padding: 10px;
-    box-shadow: 1px 1px 1px 0 lightgray inset;
+    margin-left: -8px;
     cursor: text;
-    background-color: #ffffff;
-    color:#000;
-    position:relative;
+    width: 94.3vw;
+    background-color: #fff;
+    color: #000;
+    position: relative;
+    outline: none;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    height: 100px;
+    white-space: nowrap;
 }
 
 .guppy_inactive {
-    border: 2px solid black;
+    border: 1px solid #bbb;
     padding: 10px;
-    box-shadow: 1px 1px 1px 0 lightgray inset;
+    border-radius: 4px;
     cursor: text;
-    background-color: #fafafa;
-    color:#000;
-    position:relative;
+    background-color: #fff;
+    color: #000;
+    position: relative;
+    outline: none;
 }
 
 .guppy_text_current {
@@ -45,8 +52,8 @@
 
 .guppy_buttons img{
     cursor:pointer;
-    height:16px;
-    width:16px;
+    height:40px;
+    width:40px;
     padding:3px;
     opacity: 0.5;
 }

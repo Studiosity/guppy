@@ -1,17 +1,14 @@
-body {
-    min-height:100%;
-}
-
 .guppy_osk {
-    position:fixed;
-    width:100%;
-    bottom: 0px;
-    /* border: 1px solid #ccc; */
+    margin-left: -8px;
+    position: fixed;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .guppy_osk .controls{
     text-align: center;
-    width: 100%;
+    width: 99vw;
     background-color: #fff;
     padding: 5px;
 }
@@ -21,9 +18,9 @@ body {
 }
 
 .guppy_osk_group {
-    width: 100%;
-    background-color:white;
+    background-color: white;
     text-align: center;
+    vertical-align: bottom;
 }
 
 .guppy_osk_group_box {
@@ -42,22 +39,22 @@ body {
     display: inline-block;
     justify-content: center;
     align-items: center;
-    min-width: 60px;
-    line-height:60px;
+    min-width: 20px;
+    line-height:12px;
     vertical-align:middle;
     text-align: center;
-    background: #ddd;
+    background: #e5e8ed;
     border: 1px solid #f9f9f9;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
+    padding: 8px 3px;
+    -webkit-justify-content: center;
+    -webkit-align-items: center;
 }
 
-.guppy_osk #qwerty .guppy_osk_key,
-.guppy_osk .controls .guppy_osk_key,
-.guppy_osk #QWERTY .guppy_osk_key,
 .guppy_osk #greek .guppy_osk_key {
-    line-height:40px !important;
-    height: 40px !important; 
+  line-height: 27px !important;
+  height: 30px !important;
 }
 
 .guppy_osk .guppy_osk_key:hover {
@@ -74,35 +71,155 @@ body {
 }
 
 .tabbed ul{
-  list-style-type:none;
-  /* position:relative; */
+  list-style-type: none;
+  display: -webkit-flex;
+  display: flex;
+  background: #f2f7f7;
+  margin: 0;
+  padding: 0;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 100vw;
+  white-space: nowrap;
 }
 
 .tabbed li{
-    float:left;
     cusror: pointer;
 }
- 
+
 .tabbed a{
-  display:block;
-  padding:5px 10px;
-  background-color: #fff;
+  display: block;
+  padding: 10px;
   color: #000;
+  text-align: center;
   text-decoration: none;
-  margin: 0 5px;
-  border-top:1px solid #000;
-  border-left:1px solid #000;
-  border-right:1px solid #000;
-  border-bottom: 0;
+  white-space: nowrap;
+  font-size: 8px;
 }
 
 .tabbed a.active_tab{
-  background-color: #7cf;
+  background-color: white;
+  color: #33C4C0;
 }
 
 .tabbed div{
   clear: both;
-  border:1px solid #ccc;
-  padding:5px;
-  display:none;
+  border-bottom: 1px solid #D8DEE4;
+  padding: 2px;
+  display: none;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  width: 99vw;
+  height: 100px;
+  white-space: nowrap;
+}
+
+.tabbed a.active_tab span.mathit,
+.tabbed a.active_tab span.base,
+.tabbed a.active_tab span.mord {
+  color: #33C4C0;
+}
+
+.tabbed .tab-icon {
+  padding-right: 5px;
+  height: 15px;
+  display: block;
+  vertical-align: text-bottom;
+  color: #999;
+}
+
+#guppy_osk_calculus_tab .tab-icon {
+  font-size: 0.6em;
+}
+
+.row {
+  display: table;
+  table-layout: fixed;
+  right: 16px;
+  width: 80%;
+}
+
+.controls .guppy_osk_key.undo {
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.redo {
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.del {
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.cut {
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.copy {
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.paste {
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.null1 {
+  border: 0;
+  width: 30vw;
+  background: white;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.null2 {
+  border: 0;
+  width: 10vw;
+  background: white;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.null3 {
+  border: 0;
+  width: 3vw;
+  background: white;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.spc {
+  width: 29vw;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.lefts {
+  width: 10%;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.sright {
+  width: 10%;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.ret {
+  width: 10%;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.left {
+  width: 10%;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.top {
+  width: 10%;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.bottom {
+  width: 10%;
+  display: table-cell;
+}
+
+.controls .guppy_osk_key.right {
+  width: 10%;
+  display: table-cell;
 }
