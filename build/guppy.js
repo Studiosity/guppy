@@ -75,7 +75,7 @@ AST.to_xml = function(ast, symbols, symbol_to_node){
         var nn = doc2.documentElement.firstChild
         n.firstChild.textContent += nn.firstChild.textContent;
         for(nn = nn.nextSibling; nn; nn = nn.nextSibling){
-            n.parentNode.insertBefore(nn.cloneNode(true),null); 
+            n.parentNode.insertBefore(nn.cloneNode(true),null);
         }
     }
     var ensure_text_nodes = function(base){
@@ -224,7 +224,8 @@ AST.to_function = function(ast, functions){
 AST.eval = function(ast, functions, parent){
     ans = null;
     if(!functions["_default"]) functions["_default"] = function(name, args){ throw Error("Function not implemented: " + name + "(" + args + ")");}
-    
+    if(!ast[1]) return null;
+
     var args = []
     for(var i = 0; i < ast[1].length; i++){
         if(Object.prototype.toString.call(ast[1][i]) === '[object Array]'){
@@ -237,7 +238,7 @@ AST.eval = function(ast, functions, parent){
     var ans = null;
     if(functions[ast[0]]) ans = functions[ast[0]](args, parent);
     else if(functions["_default"]) ans = functions["_default"](ast[0], args, parent);
-    
+
     return ans
 }
 
@@ -580,7 +581,7 @@ Doc.render_all = function(t, delim, root_node){
                             katex.render(d.get_content("latex"), s);
             }
             catch (e) {
-                s.innerHTML = "ERROR: "+e.message;
+                s.innerHTML = "Missing equation parameters";
             }
                         var new_node = document.createTextNode(after)
                         text_node.parentNode.insertBefore(document.createTextNode(before), text_node);
@@ -2030,18 +2031,7 @@ var Guppy = function(id, config){
     var buttons = settings['buttons'] || Settings.config.settings['buttons'];
     this.buttons_div = document.createElement("div");
     this.buttons_div.setAttribute("class","guppy_buttons");
-    if(buttons){
-        for(var i = 0; i < buttons.length; i++){
-            if(buttons[i] == "osk" && Settings.osk){
-                Guppy.make_button("icons/keyboard.png", this.buttons_div, function() {
-                    if(Settings.osk.guppy == self){ Settings.osk.detach(self); }
-                    else{ Settings.osk.attach(self); }});
-            }
-            else if(buttons[i] == "settings") Guppy.make_button("icons/settings.png", this.buttons_div, function(){ Settings.toggle("settings", self); });
-            else if(buttons[i] == "symbols") Guppy.make_button("icons/symbols.png", this.buttons_div, function(){ Settings.toggle("symbols", self); });
-            else if(buttons[i] == "controls") Guppy.make_button("icons/help.png", this.buttons_div, function(){ Settings.toggle("controls", self); });
-        }
-    }
+    this.buttons_div.setAttribute("id","guppy_buttons");
 
     this.editor_active = true;
     //this.empty_content = settings['empty_content'] || "\\red{[?]}"
@@ -2056,6 +2046,19 @@ var Guppy = function(id, config){
 
     /**   @member {Engine} */
     this.engine = new Engine(config);
+    if(buttons){
+        for(var i = 0; i < buttons.length; i++){
+            if(buttons[i] == "osk" && Settings.osk){
+                Guppy.make_button("icons/keyboard.png", this.buttons_div, function() {
+                    if(Settings.osk.guppy == self){ Settings.osk.detach(self); }
+                    else{ Settings.osk.attach(self); }});
+            }
+            else if(buttons[i] == "settings") Guppy.make_button("icons/settings.png", this.buttons_div, function(){ Settings.toggle("settings", self); });
+            else if(buttons[i] == "symbols") Guppy.make_button("icons/send.png", this.buttons_div, function(){  });
+            else if(buttons[i] == "controls") Guppy.make_button("icons/help.png", this.buttons_div, function(){ Settings.toggle("controls", self); });
+            else if(buttons[i] == "send") Guppy.make_button("icons/send.png", this.buttons_div, function(){  });
+        }
+    }
     this.temp_cursor = {"node":null,"caret":0}
     this.editor.addEventListener("keydown",Guppy.key_down, false);
     this.editor.addEventListener("keyup",Guppy.key_up, false);
@@ -2065,7 +2068,7 @@ var Guppy = function(id, config){
         this.engine.fire_event("ready");
         this.render(true);
     }
-    this.deactivate();
+    // this.deactivate();
     this.recompute_locations_paths();
 }
 
@@ -2079,6 +2082,7 @@ Guppy.Mousetrap = Mousetrap;
 Guppy.make_button = function(url, parent, cb){
     var b = document.createElement("img");
     b.setAttribute("class","guppy-button");
+    b.setAttribute("id", url.replace("\/", "").split('.')[0])
     b.setAttribute("src", Settings.config.path + "/" + url);
     parent.appendChild(b);
     if(cb){
@@ -2462,7 +2466,7 @@ Guppy.mouse_down = function(e){
             e.preventDefault();
             var prev_active = Guppy.active_guppy;
             for(var i in Guppy.instances){
-                if(i != n.id) Guppy.instances[i].deactivate();
+                // if(i != n.id) Guppy.instances[i].deactivate();
                 Guppy.active_guppy = Guppy.instances[n.id];
                 Guppy.active_guppy.activate();
             }
@@ -2490,9 +2494,9 @@ Guppy.mouse_down = function(e){
         n = n.parentNode;
     }
     Guppy.active_guppy = null;
-    for(var j in Guppy.instances){
-        Guppy.instances[j].deactivate();
-    }
+    // for(var j in Guppy.instances){
+    //     Guppy.instances[j].deactivate();
+    // }
 }
 
 Guppy.mouse_move = function(e){
@@ -2512,7 +2516,8 @@ Guppy.mouse_move = function(e){
         g.render(g.is_changed());
     }
     else{
-        g.select_to(e.clientX,e.clientY, true);
+        var el = e.target.closest("body div");
+        if (el && el.id == Guppy.active_guppy.id) g.select_to(e.clientX,e.clientY, true);
         g.render(g.is_changed());
     }
 }
@@ -3229,7 +3234,7 @@ Settings.config.settings = {
     "empty_content":"\\blue{[?]}",
     "blank_caret":"",
     "blacklist":[],
-    "buttons":["osk","settings","symbols","controls"],
+    "buttons":["osk","settings","symbols","controls","send"],
     "cliptype":"latex",
 };
 
@@ -3334,7 +3339,7 @@ Settings.init = function(symbols){
         make_x(Settings.panels[Settings.div_names[i]]);
         document.body.appendChild(Settings.panels[Settings.div_names[i]])
     }
-    
+
     make_row("guppy_help_table","left/right arrows","Move cursor");
     make_row("guppy_help_table","shift+left/right arrows","Select region")
     make_row("guppy_help_table","ctrl+a","Select all");
@@ -3347,8 +3352,8 @@ Settings.init = function(symbols){
     make_row("guppy_help_table","ctrl+backspace","Delete current entry in list or column in matrix");
     make_row("guppy_help_table","ctrl+shift+backspace","Delete current row in matrix");
 
-    
-    
+
+
     for(var s in symbols){
         var latex = Symbols.add_blanks(symbols[s].output.latex, "\\blue{[?]}");
         var row = make_row("guppy_syms_table",s," ");

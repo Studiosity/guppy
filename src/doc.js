@@ -334,7 +334,7 @@ Doc.render_all = function(t, delim, root_node){
                             katex.render(d.get_content("latex"), s);
             }
             catch (e) {
-                s.innerHTML = "ERROR: "+e.message;
+                s.innerHTML = "Missing equation parameters";
             }
                         var new_node = document.createTextNode(after)
                         text_node.parentNode.insertBefore(document.createTextNode(before), text_node);

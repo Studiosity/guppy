@@ -49,7 +49,7 @@ AST.to_xml = function(ast, symbols, symbol_to_node){
         var nn = doc2.documentElement.firstChild
         n.firstChild.textContent += nn.firstChild.textContent;
         for(nn = nn.nextSibling; nn; nn = nn.nextSibling){
-            n.parentNode.insertBefore(nn.cloneNode(true),null); 
+            n.parentNode.insertBefore(nn.cloneNode(true),null);
         }
     }
     var ensure_text_nodes = function(base){
@@ -198,7 +198,8 @@ AST.to_function = function(ast, functions){
 AST.eval = function(ast, functions, parent){
     ans = null;
     if(!functions["_default"]) functions["_default"] = function(name, args){ throw Error("Function not implemented: " + name + "(" + args + ")");}
-    
+    if(!ast[1]) return null;
+
     var args = []
     for(var i = 0; i < ast[1].length; i++){
         if(Object.prototype.toString.call(ast[1][i]) === '[object Array]'){
@@ -211,7 +212,7 @@ AST.eval = function(ast, functions, parent){
     var ans = null;
     if(functions[ast[0]]) ans = functions[ast[0]](args, parent);
     else if(functions["_default"]) ans = functions["_default"](ast[0], args, parent);
-    
+
     return ans
 }
 
