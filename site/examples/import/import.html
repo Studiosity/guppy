@@ -2,11 +2,11 @@
 <html>
 
 <head>
-    <title>Homework</title>
+    <title>Import</title>
 
-    <link rel="stylesheet" href="../../../build/guppy-default.min.css">
-    <script type="text/javascript" src="../../../build/guppy.min.js"></script>
-    <script type="text/javascript" src="../../../lib/math-expressions/math-expressions.js"></script>
+    <link rel="stylesheet" href="https://guppy.js.org/build/guppy-default.min.css">
+    <script type="text/javascript" src="https://guppy.js.org/build/guppy.js"></script>
+    <script type="text/javascript" src="https://guppy.js.org/lib/math-expressions/math-expressions.js"></script>
     <script type="text/javascript">
      import_ascii = function(){
 	 try{
@@ -21,11 +21,8 @@
 	 }
      }
      window.onload = function(){
-	 Guppy.init({"path":"../../../build",
-		     "symbols":"../../../sym/symbols.json"});
-	 var g1 = new Guppy("math_input", {
-	     "options":{'empty_content': "\\color{gray}{\\text{Import LaTeX or plaintext math below}}" }
-	 });
+	 var g1 = new Guppy("math_input");
+	 g1.configure('empty_content', "\\color{gray}{\\text{Import LaTeX or plaintext math below}}");
 	 
      }
     </script>

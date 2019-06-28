@@ -1,7 +1,8 @@
-var Utils = require('./utils.js');
-var Doc = require('./doc.js');
-var Symbols = require('./symbols.js');
-var Settings = require('./settings.js');
+import Doc from './doc.js';
+import Keyboard from './keyboard.js';
+import Settings from './settings.js';
+import Symbols from './symbols.js';
+import Utils from './utils.js';
 
 String.prototype.splice = function(idx, s){ return (this.slice(0,idx) + s + this.slice(idx)); };
 String.prototype.splicen = function(idx, s, n){ return (this.slice(0,idx) + s + this.slice(idx+n));};
@@ -11,39 +12,17 @@ String.prototype.search_at = function(idx, s){ return (this.substring(idx-s.leng
  * @class
  * @classdesc The engine for scripting the editor.  To access the
  * engine for scripting a particular Guppy instance, say called
- * `"guppy1"`, do `Guppy("guppy1").engine`.  
+ * `"guppy1"`, do `Guppy("guppy1").engine`.
  *
  * At that point, you can, for example, move that editor's cursor
  * one spot to the left with `Guppy("guppy1").engine.left()`.
 */
-var Engine = function(config){
-    config = config || {};
-    var events = config['events'] || {};
-    var settings = config['settings'] || {};
-    this.parent = config['parent'];
-    this.id = this.parent.editor.id;
-    
-    this.ready = false;
+var Engine = function(parent){
+    this.parent = parent;
+    this.symbols = {};
     this.events = {};
     this.settings = {};
-    
-    var evts = ["ready", "change", "left_end", "right_end", "done", "completion", "debug", "error", "focus"];
-    
-    for(var i = 0; i < evts.length; i++){
-        var e = evts[i];
-        if(e in events) this.events[e] = e in events ? events[e] : null;
-    }
-
-    var opts = ["blank_caret", "empty_content", "blacklist", "autoreplace", "cliptype"];
-    
-    for(var j = 0; j < opts.length; j++){
-        var p = opts[j];
-        if(p in settings) this.settings[p] = settings[p];
-    }
-
-    this.symbols = {};
-    this.doc = new Doc(settings["xml_content"]);
-    
+    this.doc = new Doc();
     this.current = this.doc.root().firstChild;
     this.caret = 0;
     this.space_caret = 0;
@@ -53,14 +32,10 @@ var Engine = function(config){
     this.undo_now = -1;
     this.sel_status = Engine.SEL_NONE;
     this.checkpoint();
-    if(Engine.ready && !this.ready){
-        this.ready = true;
-        this.symbols = JSON.parse(JSON.stringify(Symbols.symbols));
-        this.fire_event("ready");
-    }
+    this.symbols = JSON.parse(JSON.stringify(Symbols.symbols));
 }
 
-Engine.ready = false;
+Engine.kb_info = new Keyboard();
 Engine.SEL_NONE = 0;
 Engine.SEL_CURSOR_AT_START = 1;
 Engine.SEL_CURSOR_AT_END = 2;
@@ -74,7 +49,7 @@ Engine.prototype.event = function(name){
     return name in this.events ? this.events[name] : Settings.config.events[name];
 }
 
-/** 
+/**
     Get the content of the editor
     @memberof Engine
     @param {string} t - The type of content to render ("latex", "text", or "xml").
@@ -83,7 +58,7 @@ Engine.prototype.get_content = function(t,r){
     return this.doc.get_content(t,r);
 }
 
-/** 
+/**
     Set the XML content of the editor
     @memberof Engine
     @param {string} xml_data - An XML string of the content to place in the editor
@@ -92,7 +67,7 @@ Engine.prototype.set_content = function(xml_data){
     this.set_doc(new Doc(xml_data));
 }
 
-/** 
+/**
     Set the document of the editor
     @memberof Engine
     @param {Doc} doc - The Doc that will be the editor's source
@@ -129,10 +104,10 @@ Engine.prototype.fire_event = function(event, args){
     args.target = this.parent || this;
     args.type = event;
     var ev = this.event(event);
-    if(ev && this.ready && Engine.ready) ev(args);
+    if(ev) ev(args);
 }
 
-/** 
+/**
     Remove a symbol from this instance of the editor.
     @memberof Engine
     @param {string} name - The name of the symbol to remove.
@@ -141,7 +116,7 @@ Engine.prototype.remove_symbol = function(name){
     if(this.symbols[name]) delete this.symbols[name];
 }
 
-/** 
+/**
     Add a symbol to this instance of the editor.
     @memberof Engine
     @param {string} name - param
@@ -203,33 +178,35 @@ Engine.prototype.add_classes_cursors = function(n){
         var text = n.firstChild.nodeValue;
         var ans = "";
         var sel_cursor;
-        var text_node = Utils.is_text(n);
+	var text_node = Utils.is_text(n);
         if(this.sel_status == Engine.SEL_CURSOR_AT_START) sel_cursor = this.sel_end;
         if(this.sel_status == Engine.SEL_CURSOR_AT_END) sel_cursor = this.sel_start;
         if(this.sel_status != Engine.SEL_NONE){
             var sel_caret_text = Utils.is_small(sel_cursor.node) ? Utils.SMALL_SEL_CARET : Utils.SEL_CARET;
-            if(!text_node && text.length == 0 && n.parentNode.childElementCount > 1){
+            if(text.length == 0 && n.parentNode.childElementCount > 1){
                 sel_caret_text = "\\blue{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0}{"+sel_caret_text+"}}";
             }
             else{
                 sel_caret_text = "\\blue{"+sel_caret_text+"}";
             }
-            if(this.sel_status == Engine.SEL_CURSOR_AT_END) sel_caret_text = text_node ? "[" : sel_caret_text + "\\"+Utils.SEL_COLOR+"{";
-            if(this.sel_status == Engine.SEL_CURSOR_AT_START) sel_caret_text = text_node ? "]" : "}" + sel_caret_text;
+            if(this.sel_status == Engine.SEL_CURSOR_AT_END) sel_caret_text = sel_caret_text + "\\"+Utils.SEL_COLOR+"{";
+            if(this.sel_status == Engine.SEL_CURSOR_AT_START) sel_caret_text = "}" + sel_caret_text;
         }
         var caret_text = "";
         var temp_caret_text = "";
         if(text.length == 0){
-            if(text_node) caret_text = "\\_";
-            else if(n.parentNode.childElementCount == 1){
+            if(n.parentNode.childElementCount == 1){
                 if(this.current == n){
                     var blank_caret = this.setting("blank_caret") || (Utils.is_small(this.current) ? Utils.SMALL_CARET : Utils.CARET);
                     ans = "\\red{\\xmlClass{main_cursor guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0"+"}{"+blank_caret+"}}";
                 }
-                else if(this.temp_cursor.node == n)
-                    ans = "\\gray{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0"+"}{[?]}}";
-                else
-                    ans = "\\blue{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0"+"}{[?]}}";
+                else{
+                    var blank_placeholder = this.setting("blank_placeholder") || "[?]";
+                    if(this.temp_cursor.node == n)
+                        ans = "\\gray{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0"+"}{"+blank_placeholder+"}}";
+                    else
+                        ans = "\\blue{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0"+"}{"+blank_placeholder+"}}";
+                }
             }
             else if(this.temp_cursor.node != n && this.current != n && (!(sel_cursor) || sel_cursor.node != n)){
                 // These are the empty e elements at either end of
@@ -238,50 +215,33 @@ Engine.prototype.add_classes_cursors = function(n){
                 //
                 // Here, we add in a small element so that we can
                 // use the mouse to select these areas
-                ans = "\\phantom{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0"+"}{\\cursor[0.1ex]{1ex}}}";
+                ans = "\\phantom{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0"+"}{\\hspace{0pt}}}";
             }
         }
         for(var i = 0; i < text.length+1; i++){
             if(n == this.current && i == this.caret && (text.length > 0 || n.parentNode.childElementCount > 1)){
-                if(text_node){
-                    if(this.sel_status == Engine.SEL_CURSOR_AT_START)
-                        caret_text = "[";
-                    else if(this.sel_status == Engine.SEL_CURSOR_AT_END)
-                        caret_text = "]";
-                    else
-                        caret_text = "\\_";
-                }
+                caret_text = Utils.is_small(this.current) ? Utils.SMALL_CARET : Utils.CARET;
+                if(text.length == 0)
+                    caret_text = "\\red{\\xmlClass{main_cursor guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0}{"+caret_text+"}}";
                 else{
-                    caret_text = Utils.is_small(this.current) ? Utils.SMALL_CARET : Utils.CARET;
-                    if(text.length == 0)
-                        caret_text = "\\red{\\xmlClass{main_cursor guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0}{"+caret_text+"}}";
-                    else{
-                        caret_text = "\\red{\\xmlClass{main_cursor}{"+caret_text+"}}"
-                    }
-                    if(this.sel_status == Engine.SEL_CURSOR_AT_START)
-                        caret_text = caret_text + "\\"+Utils.SEL_COLOR+"{";
-                    else if(this.sel_status == Engine.SEL_CURSOR_AT_END)
-                        caret_text = "}" + caret_text;
+                    caret_text = "\\red{\\xmlClass{main_cursor}{"+caret_text+"}}"
                 }
-                ans += caret_text;
-            }
-            else if(n == this.current && i == this.caret && text_node){
+                if(this.sel_status == Engine.SEL_CURSOR_AT_START)
+                    caret_text = caret_text + "\\"+Utils.SEL_COLOR+"{";
+                else if(this.sel_status == Engine.SEL_CURSOR_AT_END)
+                    caret_text = "}" + caret_text;
                 ans += caret_text;
             }
             else if(this.sel_status != Engine.SEL_NONE && sel_cursor.node == n && i == sel_cursor.caret){
                 ans += sel_caret_text;
             }
             else if(this.temp_cursor.node == n && i == this.temp_cursor.caret && (text.length > 0 || n.parentNode.childElementCount > 1)){
-                if(text_node) 
-                    temp_caret_text = ".";
-                else{
-                    temp_caret_text = Utils.is_small(this.current) ? Utils.TEMP_SMALL_CARET : Utils.TEMP_CARET;
-                    if(text.length == 0){
-                        temp_caret_text = "\\gray{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0}{"+temp_caret_text+"}}";
+                temp_caret_text = Utils.is_small(this.current) ? Utils.TEMP_SMALL_CARET : Utils.TEMP_CARET;
+                if(text.length == 0){
+                    temp_caret_text = "\\gray{\\xmlClass{guppy_elt guppy_blank guppy_loc_"+n.getAttribute("path")+"_0}{"+temp_caret_text+"}}";
                     }
-                    else
-                        temp_caret_text = "\\gray{"+temp_caret_text+"}";
-                }
+                else
+                    temp_caret_text = "\\gray{"+temp_caret_text+"}";
                 ans += temp_caret_text;
             }
             if(i < text.length) ans += "\\xmlClass{guppy_elt guppy_loc_"+n.getAttribute("path")+"_"+i+"}{"+text[i]+"}";
@@ -329,7 +289,7 @@ Engine.prototype.down_from_f_to_blank = function(){
     }
     if(nn != null){
         //Sanity check:
-        
+
         while(nn.nodeName == 'l') nn = nn.firstChild;
         if(nn.nodeName != 'c' || nn.firstChild.nodeName != 'e'){
             this.problem('dfftb');
@@ -355,18 +315,22 @@ Engine.prototype.delete_from_f = function(to_insert){
     p.removeChild(next);
 }
 
-Engine.prototype.symbol_to_node = function(sym_name, content){
-    return Symbols.symbol_to_node(this.symbols[sym_name], content, this.doc.base);
+Engine.prototype.symbol_to_node = function(sym, content){
+    return Symbols.symbol_to_node(sym, content, this.doc.base);
 }
 
-/** 
+Engine.prototype.template_to_node = function(tmpl_name, content, name, tmpl_args){
+    return Symbols.symbol_to_node(Symbols.make_template_symbol(tmpl_name, name, tmpl_args), content, this.doc.base);
+}
+
+/**
     Insert a symbol into the document at the current cursor position.
     @memberof Engine
     @param {string} sym_name - The name of the symbol to insert.
     Should match one of the keys in the symbols JSON object
 */
-Engine.prototype.insert_symbol = function(sym_name){
-    var s = this.symbols[sym_name];
+Engine.prototype.insert_symbol = function(sym_name,sym_args){
+    var s = sym_args ? Symbols.make_template_symbol(sym_name, sym_args.name, sym_args) : this.symbols[sym_name];
     if(s.attrs && this.is_blacklisted(s.attrs.type)){
         return false;
     }
@@ -377,7 +341,7 @@ Engine.prototype.insert_symbol = function(sym_name){
     var to_replace = null;
     var replace_f = false;
     var sel;
-    
+
     if(cur > 0){
         cur--;
         if(this.sel_status != Engine.SEL_NONE){
@@ -390,14 +354,16 @@ Engine.prototype.insert_symbol = function(sym_name){
         else if("input" in s){
             // If we're at the beginning, then the token is the previous f node
             if(this.caret == 0 && this.current.previousSibling != null){
-                content[cur] = [this.make_e(""), this.current.previousSibling, this.make_e("")];
-                to_replace = this.current.previousSibling;
-                replace_f = true;
+                if(this.current.previousSibling.getAttribute("ast_type") != "operator") {
+                    content[cur] = [this.make_e(""), this.current.previousSibling, this.make_e("")];
+                    to_replace = this.current.previousSibling;
+                    replace_f = true;
+                }
             }
             else{
                 // look for [0-9.]+|[a-zA-Z] immediately preceeding the caret and use that as token
                 var prev = this.current.firstChild.nodeValue.substring(0,this.caret);
-                var token = prev.match(/[0-9.]+$|[a-zA-Z]$/);
+                var token = prev.charCodeAt(prev.length-1) > 128 ? prev[prev.length-1] : prev.match(/[0-9.]+$|[a-zA-Z]$/);
                 if(token != null && token.length > 0){
                     token = token[0];
                     left_piece = this.make_e(this.current.firstChild.nodeValue.slice(0,this.caret-token.length));
@@ -413,17 +379,17 @@ Engine.prototype.insert_symbol = function(sym_name){
             to_remove = sel.involved;
             left_piece = this.make_e(sel.remnant.firstChild.nodeValue.slice(0,this.sel_start.caret));
             right_piece = this.make_e(sel.remnant.firstChild.nodeValue.slice(this.sel_start.caret));
-            content = [sel.node_list];
-	}
-	else{
+            content = "input" in s && s.input < 0 ? [] : [sel.node_list];
+        }
+        else{
             left_piece = this.make_e(this.current.firstChild.nodeValue.slice(0,this.caret));
             right_piece = this.make_e(this.current.firstChild.nodeValue.slice(this.caret));
             to_remove = [this.current];
-	}
+        }
     }
 
     // By now:
-    // 
+    //
     // content contains whatever we want to pre-populate the 'current' field with (if any)
     //
     // right_piece contains whatever content was in an involved node
@@ -433,9 +399,9 @@ Engine.prototype.insert_symbol = function(sym_name){
     // Thus all we should have to do now is symbol_to_node(sym_type,
     // content) and then add the left_piece, resulting node, and
     // right_piece in that order.
-    var sym = this.symbol_to_node(sym_name,content);
+    var sym = this.symbol_to_node(s,content);
     var current_parent = this.current.parentNode;
-    
+
     var f = sym.f;
 
     var next = this.current.nextSibling;
@@ -445,7 +411,7 @@ Engine.prototype.insert_symbol = function(sym_name){
     }
     else{
         if(to_remove.length == 0) this.current.parentNode.removeChild(this.current);
-        
+
         for(var i = 0; i < to_remove.length; i++){
             if(next == to_remove[i]) next = next.nextSibling;
             current_parent.removeChild(to_remove[i]);
@@ -454,7 +420,7 @@ Engine.prototype.insert_symbol = function(sym_name){
         current_parent.insertBefore(f, next);
         current_parent.insertBefore(right_piece, next);
     }
-    
+
     this.caret = 0;
     this.current = f;
     if(sym.args.length == 0 || ("input" in s && s.input >= sym.args.length)){
@@ -483,7 +449,7 @@ Engine.prototype.sel_get = function(){
                 "remnant":this.make_e(this.sel_start.node.firstChild.nodeValue.substring(0, this.sel_start.caret) + this.sel_end.node.firstChild.nodeValue.substring(this.sel_end.caret)),
                 "involved":[this.sel_start.node]};
     }
-    
+
     node_list.push(this.make_e(this.sel_start.node.firstChild.nodeValue.substring(this.sel_start.caret)));
     involved.push(this.sel_start.node);
     involved.push(this.sel_end.node);
@@ -508,7 +474,7 @@ Engine.prototype.make_e = function(text){
     return new_node;
 }
 
-/** 
+/**
     Insert a string into the document at the current cursor position.
     @memberof Engine
     @param {string} s - The string to insert.
@@ -530,7 +496,7 @@ Engine.prototype.insert_string = function(s){
     }
 }
 
-/** 
+/**
     Insert a copy of the given document into the editor at the current cursor position.
     @memberof Engine
     @param {Doc} doc - The document to insert.
@@ -539,7 +505,7 @@ Engine.prototype.insert_doc = function(doc){
     this.insert_nodes(doc.root().childNodes, true);
 }
 
-/** 
+/**
     Copy the current selection, leaving the document unchanged but
     placing the contents of the current selection on the clipboard.
     @memberof Engine
@@ -582,7 +548,7 @@ Engine.prototype.system_copy = function(text) {
     }
 }
 
-/** 
+/**
     Cut the current selection, removing it from the document and placing it in the clipboard.
     @memberof Engine
 */
@@ -628,7 +594,7 @@ Engine.prototype.insert_nodes = function(node_list, move_cursor){
     }
 }
 
-/** 
+/**
     Paste the current contents of the clipboard.
     @memberof Engine
 */
@@ -641,18 +607,18 @@ Engine.prototype.sel_paste = function(){
     return;
 }
 
-/** 
+/**
     Clear the current selection, leaving the document unchanged and
     nothing selected.
     @memberof Engine
 */
 Engine.prototype.sel_clear = function(){
-    this.sel_start = null;    
+    this.sel_start = null;
     this.sel_end = null;
     this.sel_status = Engine.SEL_NONE;
 }
 
-/** 
+/**
     Delete the current selection.
     @memberof Engine
 */
@@ -682,7 +648,7 @@ Engine.prototype.sel_delete = function(){
     return sel.node_list;
 }
 
-/** 
+/**
     Select the entire contents of the editor.
     @memberof Engine
 */
@@ -695,7 +661,7 @@ Engine.prototype.sel_all = function(){
         this.sel_status = Engine.SEL_CURSOR_AT_END;
 }
 
-/** 
+/**
     function
     @memberof Engine
     @param {string} name - param
@@ -733,7 +699,7 @@ Engine.prototype.set_sel_boundary = function(sstatus, mouse){
         this.set_sel_end();
 }
 
-/** 
+/**
     Move the cursor to the left, adjusting the selection along with
     the cursor.
     @memberof Engine
@@ -772,8 +738,8 @@ Engine.prototype.list_extend_down = function(){this.list_extend("down", false);}
 Engine.prototype.list_extend_copy_up = function(){this.list_extend("up", true);}
 Engine.prototype.list_extend_copy_down = function(){this.list_extend("down", true);}
 
-/** 
-    Move the cursor by one row up or down in a matrix. 
+/**
+    Move the cursor by one row up or down in a matrix.
     @memberof Engine
     @param {boolean} down - If `true`, move down in the matrix;
     otherwise, up.
@@ -802,13 +768,13 @@ Engine.prototype.list_vertical_move = function(down){
     this.caret = down ? 0 : this.current.firstChild.textContent.length;
 }
 
-/** 
+/**
     Add an element to a list (or row/column to a matrix) in the
     specified direction.  Can optionally copy the current
     element/row/column to the new one.
     @memberof Engine
     @param {string} direction - One of `"up"`, `"down"`, `"left"`, or
-    `"right"`.  
+    `"right"`.
     @param {boolean} copy - Whether or not to copy the current
     element/row/column into the new one.
 */
@@ -823,8 +789,8 @@ Engine.prototype.list_extend = function(direction, copy){
     }
     if(!n.parentNode) return;
     var to_insert;
-    
-    // check if 2D and horizontal and extend all the other rows if so 
+
+    // check if 2D and horizontal and extend all the other rows if so
     if(!vertical && n.parentNode.parentNode.nodeName == "l"){
         to_insert = base.createElement("c");
         to_insert.appendChild(this.make_e(""));
@@ -836,7 +802,7 @@ Engine.prototype.list_extend = function(direction, copy){
         }
         var to_modify = [];
         var iterator = this.doc.xpath_list("./l/c[position()="+pos+"]", n.parentNode.parentNode);
-	var nn = null;
+        var nn = null;
         try{ for(nn = iterator.iterateNext(); nn != null; nn = iterator.iterateNext()){ to_modify.push(nn); }}
         catch(e) { this.fire_event("error",{"message":'XML modified during iteration? ' + e}); }
         for(var j = 0; j < to_modify.length; j++){
@@ -851,7 +817,7 @@ Engine.prototype.list_extend = function(direction, copy){
         this.checkpoint();
         return;
     }
-    
+
     if(copy){
         to_insert = n.cloneNode(true);
     }
@@ -879,7 +845,7 @@ Engine.prototype.list_extend = function(direction, copy){
     this.checkpoint();
 }
 
-/** 
+/**
     Remove the current column from a matrix
     @memberof Engine
 */
@@ -889,7 +855,7 @@ Engine.prototype.list_remove_col = function(){
         n = n.parentNode;
     }
     if(!n.parentNode) return;
-    
+
     // Don't remove if there is only a single column:
     if(n.previousSibling != null){
         this.current = n.previousSibling.lastChild;
@@ -900,10 +866,10 @@ Engine.prototype.list_remove_col = function(){
         this.caret = 0;
     }
     else return;
-    
+
     var pos = 1;
     var cc = n;
-    
+
     // Find position of column
     while(cc.previousSibling != null){
         pos++;
@@ -922,7 +888,7 @@ Engine.prototype.list_remove_col = function(){
     this.checkpoint();
 }
 
-/** 
+/**
     Remove the current row from a matrix
     @memberof Engine
 */
@@ -948,7 +914,7 @@ Engine.prototype.list_remove_row = function(){
     this.checkpoint();
 }
 
-/** 
+/**
     Remove the current element from a list (or column from a matrix)
     @memberof Engine
 */
@@ -976,7 +942,7 @@ Engine.prototype.list_remove = function(){
     this.checkpoint();
 }
 
-/** 
+/**
     Simulate the right arrow key press
     @memberof Engine
 */
@@ -997,7 +963,7 @@ Engine.prototype.right = function(){
     }
 }
 
-/** 
+/**
     Simulate the spacebar key press
     @memberof Engine
 */
@@ -1006,7 +972,7 @@ Engine.prototype.spacebar = function(){
     else this.space_caret = this.caret;
 }
 
-/** 
+/**
     Simulate the left arrow key press
     @memberof Engine
 */
@@ -1088,7 +1054,7 @@ Engine.prototype.delete_from_e = function(){
             }
         }
         else{
-            // We're at the beginning (hopefully!) 
+            // We're at the beginning (hopefully!)
             return false;
         }
     }
@@ -1115,7 +1081,7 @@ Engine.prototype.delete_forward_from_e = function(){
     return true;
 }
 
-/** 
+/**
     Simulate the "backspace" key press
     @memberof Engine
 */
@@ -1130,7 +1096,7 @@ Engine.prototype.backspace = function(){
     }
 }
 
-/** 
+/**
     Simulate the "delete" key press
     @memberof Engine
 */
@@ -1150,13 +1116,17 @@ Engine.prototype.backslash = function(){
     this.insert_symbol("sym_name");
 }
 
-/** 
+/**
     Simulate a tab key press
     @memberof Engine
 */
 Engine.prototype.tab = function(){
     if(!Utils.is_symbol(this.current)){
-        this.check_for_symbol();
+        if(this.check_for_symbol()) return;
+    }
+    if(Utils.is_utf8entry(this.current)){
+        var codepoint = this.current.firstChild.textContent;
+        this.complete_utf8(codepoint);
         return;
     }
     var sym_name = this.current.firstChild.textContent;
@@ -1167,6 +1137,7 @@ Engine.prototype.tab = function(){
     if(candidates.length == 1){
         this.current.firstChild.textContent = candidates[0];
         this.caret = candidates[0].length;
+        this.check_for_symbol();
     }
     else {
         this.fire_event("completion",{"candidates":candidates});
@@ -1178,7 +1149,7 @@ Engine.prototype.right_paren = function(){
     else this.right();
 }
 
-/** 
+/**
     Simulate an up arrow key press
     @memberof Engine
 */
@@ -1198,7 +1169,7 @@ Engine.prototype.up = function(){
     else this.list_vertical_move(false);
 }
 
-/** 
+/**
     Simulate a down arrow key press
     @memberof Engine
 */
@@ -1218,7 +1189,7 @@ Engine.prototype.down = function(){
     else this.list_vertical_move(true);
 }
 
-/** 
+/**
     Move the cursor to the beginning of the document
     @memberof Engine
 */
@@ -1227,7 +1198,7 @@ Engine.prototype.home = function(){
     this.caret = 0;
 }
 
-/** 
+/**
     Move the cursor to the end of the document
     @memberof Engine
 */
@@ -1248,7 +1219,6 @@ Engine.prototype.checkpoint = function(){
     this.fire_event("change",{"old":old_data,"new":new_data});
     this.current.removeAttribute("current");
     this.current.removeAttribute("caret");
-    if(this.parent && this.parent.ready) this.parent.render(true);
 }
 
 Engine.prototype.restore = function(t){
@@ -1263,7 +1233,7 @@ Engine.prototype.find_current = function(){
     this.caret = parseInt(this.current.getAttribute("caret"));
 }
 
-/** 
+/**
     Undo the last action
     @memberof Engine
 */
@@ -1277,7 +1247,7 @@ Engine.prototype.undo = function(){
     this.fire_event("change",{"old":old_data,"new":new_data});
 }
 
-/** 
+/**
     Redo the last undone action
     @memberof Engine
 */
@@ -1291,12 +1261,16 @@ Engine.prototype.redo = function(){
     this.fire_event("change",{"old":old_data,"new":new_data});
 }
 
-/** 
+/**
     Execute the "done" callback
     @memberof Engine
 */
 Engine.prototype.done = function(){
     if(Utils.is_symbol(this.current)) this.complete_symbol();
+    else if(Utils.is_utf8entry(this.current)){
+        var codepoint = this.current.firstChild.textContent;
+        this.complete_utf8(codepoint);
+    }
     else this.fire_event("done");
 }
 
@@ -1306,6 +1280,30 @@ Engine.prototype.complete_symbol = function(){
     this.current = this.current.parentNode.parentNode;
     this.delete_from_f();
     this.insert_symbol(sym_name);
+}
+
+Engine.prototype.complete_utf8 = function(codepoint){
+    codepoint = parseInt('0x'+codepoint);
+    this.current = this.current.parentNode.parentNode;
+    this.delete_from_f();
+    this.insert_utf8(codepoint);
+}
+
+Engine.prototype.insert_utf8 = function(codepoint){
+    //this.insert_string(c);
+    // if((codepoint < 0xffff && Object.values(Engine.kb_info.k_chars).indexOf(c) >= 0) || Utils.is_text(this.current)){
+    //     this.insert_string(c);
+    // }
+    // else{
+    //     this.insert_symbol("utf8codepoint",{"name":"UTF8","codepoint":codepoint.toString(16)});
+    // }
+    if(codepoint <= 0xffff){
+	var c = String.fromCharCode(codepoint);
+        this.insert_string(c);
+    }
+    else{
+        this.insert_symbol("utf8codepoint",{"name":"UTF8","codepoint":codepoint.toString(16)});
+    }
 }
 
 Engine.prototype.problem = function(message){
@@ -1321,7 +1319,7 @@ Engine.prototype.is_blacklisted = function(symb_type){
 
 Engine.prototype.check_for_symbol = function(whole_node){
     var instance = this;
-    if(Utils.is_text(this.current)) return;
+    if(Utils.is_text(this.current)) return false;
     var sym = "";
     var n = null;
     if(whole_node){
@@ -1332,7 +1330,7 @@ Engine.prototype.check_for_symbol = function(whole_node){
             if(this.symbols[s]) sym = s;
         }
     }
-    else{    
+    else{
         n = instance.current.firstChild.nodeValue.substring(instance.space_caret, instance.caret);
         while(n.length > 0){
             if(n in this.symbols){
@@ -1343,8 +1341,8 @@ Engine.prototype.check_for_symbol = function(whole_node){
         }
     }
 
-    if(sym == "") return;
-    
+    if(sym == "") return false;
+
     var temp = instance.current.firstChild.nodeValue;
     var temp_caret = instance.caret;
     instance.current.firstChild.nodeValue = instance.current.firstChild.nodeValue.slice(0,instance.caret-sym.length)+instance.current.firstChild.nodeValue.slice(instance.caret);
@@ -1354,6 +1352,7 @@ Engine.prototype.check_for_symbol = function(whole_node){
         instance.current.firstChild.nodeValue = temp;
         instance.caret = temp_caret;
     }
+    return success;
 }
 
-module.exports = Engine;
+export default Engine;

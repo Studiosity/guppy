@@ -3,14 +3,14 @@
 
 <head>
     <title>Guppy</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
     <link rel="stylesheet" href="../build/guppy-default-osk.min.css">
-    <script type="text/javascript" src="../build/guppy.min.js"></script>
+    <script type="text/javascript" src="../build/guppy.js"></script>
     <script type="text/javascript" src="../build/guppy_osk.js"></script>
 
     <script type="text/javascript" src="index.js"></script>
-    <link rel="stylesheet" href="../style/guppy.css">
     <link rel="stylesheet" href="index.css">
 
 </head>
@@ -22,15 +22,23 @@
 	<div class="navbar-header">
 	  <a class="navbar-brand" href="/">Guppy <font color="red">(BETA)</font></a>
 	</div>
-	
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+	    AA
+        </button>
+	<div class="collapse navbar-collapse">
 	<ul class="nav navbar-nav pull-right">
 	  <li><a href="./doc/quickstart.html">Quick start</a></li>
 	  <li><a href="./examples/">Examples</a></li>
 	  <li><a href="./doc/">Docs</a></li>
-	  <li><a href="./api/guppy-js/2.0.0-beta.3/">API</a></li>
+	  <li><a href="./api/guppy-js/2.0.0-rc.1/">API</a></li>
 	  <li><a href="https://github.com/daniel3735928559/guppy">Source</a></li>
 	  <li><a href="./contribute/">Contributing</a></li>
 	</ul>
+	</div>
     </nav>
   </div>
 
@@ -39,14 +47,14 @@
       <h1>Mathematics input widget for the web</h1>
     <br /><br />
     <div class="row">
-      <div class="center-block" id="guppy1"></div> 
+      <div class="center-block" id="guppy1"></div>
     </div>
     <br /><br /><br />
     <div class="row">
 	<input class="col-sm-4 col-sm-offset-4" style="font-family:monospace;white-space:pre;margin-bottom:5px;" type="text" id="sample_output" class="form-control" placeholder="Output will appear here" />
     </div>
     <div class="row">
-      <div class="col-sm-4 col-sm-offset-4" style="text-align:center"> 
+      <div class="col-sm-4 col-sm-offset-4" style="text-align:center">
 	<a href="#" id="output_latex" class="output-select output-selected" onclick="select_output('latex')">LaTeX</a>
 	<a href="#" id="output_asciimath" class="output-select output-unselected" onclick="select_output('asciimath')">ASCIIMath</a>
 	<a href="#" id="output_text" class="output-select output-unselected" onclick="select_output('text')">Text</a>
@@ -93,11 +101,11 @@
 	<h3>Looks great; let's get to work!</h3>
       <ul>
 	<li><h4><b>How do I get started?</b></h4>
-	  <p>Pop over to the <a href="quickstart">quick start</a> guide for instructions on setting up.</p>
+	  <p>Pop over to the <a href="./doc/quickstart.html">quick start</a> guide for instructions on setting up.</p>
 	  <p>Check the <a href="examples">examples</a> page for many more things you can do.</p>
 	</li>
 	<li><h4><b>Can I evaluate expressions numerically?</b></h4>
-	  Yes!  See the <a href="examples/calc">calculator</a> and <a href="examples/graph">graphing</a> examples.
+	  Yes!  See the <a href="./examples/calc">calculator</a> and <a href="examples/graph">graphing</a> examples.
 	</li>
 	<li><h4><b>Can I compare an input to a given expression?</b></h4>
 	  Yes, using the <a href="https://github.com/kisonecat/math-expressions">math-expressions</a> library.  Check out the <a href="examples/quiz">quiz</a> example.
@@ -112,12 +120,12 @@
 	  Import formats: XML, JSON syntax tree, plain text, a
 	  semantic LaTeX, and also a subset of standard LaTeX through
 	  a third party library.<br />
-	  
+
 	  See the <a href="examples/io">Import/Export</a> example for
 	  all natively supported formats, and see
 	  the <a href="examples/import">LaTeX import</a> example for
 	  limited import from standard LaTeX.
-	  
+
 	</li>
 	<li><h4><b>Who is using it?</b></h4>
 	  <ul>

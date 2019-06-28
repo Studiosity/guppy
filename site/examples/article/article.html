@@ -2,13 +2,11 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="../../../build/guppy-default.min.css">
-    <script type="text/javascript" src="../../../build/guppy.min.js"></script>
+    <link rel="stylesheet" href="https://guppy.js.org/build/guppy-default.min.css">
+    <script type="text/javascript" src="https://guppy.js.org/build/guppy.min.js"></script>
     <script type="text/javascript">
      window.onload = function(){
-	 Guppy.init({"path":"../../../build",
-		     "symbols":"../../../sym/symbols.json",
-		     "callback":function(){ Guppy.Doc.render_all("text","$$"); }});
+	 Guppy.render_all("text","$$");
      }
     </script>
 </head>

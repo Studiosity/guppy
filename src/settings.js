@@ -1,13 +1,15 @@
-var katex = require('../lib/katex/katex-modified.min.js');
-var Symbols = require('./symbols.js');
+import Symbols from './symbols.js';
+import katex from '../lib/katex/katex-modified.min.js';
+
 var Settings = {}
 Settings.config = {};
-Settings.config.path = "/lib/guppy";
 Settings.config.events = {};
+Settings.config.valid_events = ["change","left_end","right_end","done","completion","debug","error","focus"];
 Settings.config.settings = {
     "autoreplace":"auto",
     "empty_content":"\\blue{[?]}",
     "blank_caret":"",
+    "blank_placeholder":"[?]",
     "blacklist":[],
     "buttons":["osk","settings","symbols","controls","send"],
     "cliptype":"latex",
@@ -136,4 +138,4 @@ Settings.init = function(symbols){
     }
 }
 
-module.exports = Settings;
+export default Settings;

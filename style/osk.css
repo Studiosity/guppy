@@ -32,6 +32,8 @@
 
 .guppy_osk .spacer {
     display: inline-block;
+    height:0;
+    width:8vw;
 }
 
 .guppy_osk .guppy_osk_key {
@@ -57,75 +59,23 @@
   height: 30px !important;
 }
 
+.guppy_osk .med_key {
+    min-width:10vw !important;
+}
+
+/* .guppy_osk #qwerty .guppy_osk_key, */
+/* .guppy_osk .controls .guppy_osk_key, */
+/* .guppy_osk #QWERTY .guppy_osk_key, */
+.guppy_osk .long_key {
+    min-width:20vw !important;
+}
+
 .guppy_osk .guppy_osk_key:hover {
     position: relative;
     top: 1px;
     left: 1px;
     border: 1px solid #e5e5e5;
     cursor: pointer;
-}
-
-.tabbed{
-  overflow:hidden;
-  clear:both;
-}
-
-.tabbed ul{
-  list-style-type: none;
-  display: -webkit-flex;
-  display: flex;
-  background: #f2f7f7;
-  margin: 0;
-  padding: 0;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  width: 100vw;
-  white-space: nowrap;
-}
-
-.tabbed li{
-    cusror: pointer;
-}
-
-.tabbed a{
-  display: block;
-  padding: 10px;
-  color: #000;
-  text-align: center;
-  text-decoration: none;
-  white-space: nowrap;
-  font-size: 8px;
-}
-
-.tabbed a.active_tab{
-  background-color: white;
-  color: #33C4C0;
-}
-
-.tabbed div{
-  clear: both;
-  border-bottom: 1px solid #D8DEE4;
-  padding: 2px;
-  display: none;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  width: 99vw;
-  height: 100px;
-  white-space: nowrap;
-}
-
-.tabbed a.active_tab span.mathit,
-.tabbed a.active_tab span.base,
-.tabbed a.active_tab span.mord {
-  color: #33C4C0;
-}
-
-.tabbed .tab-icon {
-  padding-right: 5px;
-  height: 15px;
-  display: block;
-  vertical-align: text-bottom;
-  color: #999;
 }
 
 #guppy_osk_calculus_tab .tab-icon {
@@ -222,4 +172,79 @@
 .controls .guppy_osk_key.right {
   width: 10%;
   display: table-cell;
+}
+
+/* .tabbar div{ */
+/*   clear: both; */
+/*   border:1px solid #ccc; */
+/*   padding:5px; */
+/*   display:none; */
+/* } */
+
+.tabbar{
+  overflow:hidden;
+  clear:both;
+}
+
+.tabbar ul{
+  list-style-type: none;
+  display: -webkit-flex;
+  display: flex;
+  background: #f2f7f7;
+  margin: 0;
+  padding: 0;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 100vw;
+  white-space: nowrap;
+}
+
+.tabbar li{
+    cusror: pointer;
+}
+
+.tabbar a{
+  display: block;
+  padding: 10px;
+  color: #000;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 8px;
+}
+
+.tabbar a.active_tab{
+  background-color: white;
+  color: #33C4C0;
+}
+
+.tabbed{
+  overflow: hidden;
+  clear: both;
+}
+
+.tabbed div{
+  clear: both;
+  border-bottom: 1px solid #D8DEE4;
+  padding: 2px;
+  display: none;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  width: 99vw;
+  height: 100px;
+  white-space: nowrap;
+}
+
+.tabbar a.active_tab span.mathit,
+.tabbar a.active_tab span.base,
+.tabbar a.active_tab span.mord {
+  color: #33C4C0;
+}
+
+.tabbar .tab-icon {
+  padding-right: 5px;
+  height: 15px;
+  display: block;
+  vertical-align: text-bottom;
+  color: #999;
 }

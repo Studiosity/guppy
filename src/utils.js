@@ -1,12 +1,12 @@
 var Utils = {};
 
-Utils.CARET = "\\cursor[-0.2ex]{0.7em}"
-Utils.TEMP_SMALL_CARET = "\\cursor{0.7ex}"
-Utils.TEMP_CARET = "\\cursor[-0.2ex]{0.7em}"
-Utils.SMALL_CARET = "\\cursor{0.7ex}"
-Utils.SEL_CARET = "\\cursor[-0.2ex]{0.7em}"
-Utils.SMALL_SEL_CARET = "\\cursor{0.7ex}"
-Utils.SEL_COLOR = "red"
+Utils.CARET = "\\xmlClass{cursor}{\\hspace{0pt}}";
+Utils.TEMP_SMALL_CARET = "\\xmlClass{cursor}{\\hspace{0pt}}";
+Utils.TEMP_CARET = "\\xmlClass{cursor}{\\hspace{0pt}}";
+Utils.SMALL_CARET = "\\xmlClass{cursor}{\\hspace{0pt}}";
+Utils.SEL_CARET = "\\xmlClass{cursor}{\\hspace{0pt}}";
+Utils.SMALL_SEL_CARET = "\\xmlClass{cursor}{\\hspace{0pt}}";
+Utils.SEL_COLOR = "red";
 
 Utils.is_blank = function(n){
     return n.firstChild == null || n.firstChild.nodeValue == '';
@@ -40,6 +40,10 @@ Utils.is_symbol = function(nn){
     return nn.parentNode.getAttribute("mode") && nn.parentNode.getAttribute("mode") == "symbol";
 }
 
+Utils.is_utf8entry = function(nn){
+    return nn.parentNode.getAttribute("utf8") && nn.parentNode.getAttribute("utf8") == "entry";
+}
+
 Utils.is_small = function(nn){
     var n = nn.parentNode;
     while(n != null && n.nodeName != 'm'){
@@ -53,4 +57,4 @@ Utils.is_small = function(nn){
     return false;
 }
 
-module.exports = Utils;
+export default Utils;

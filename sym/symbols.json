@@ -3,37 +3,72 @@
     "_name": "base",
     "norm":
     {"output":{
-        "latex":"||{$1}||",
+        "latex":"\\left|\\left|{$1}\\right|\\right|",
         "asciimath":"norm({$1})"},
      "attrs":{
-   "type":"norm",
-   "group":"functions"},
+	 "type":"norm",
+	 "group":"functions"},
      "args":[
-   {"delete":"1"}]
+	 {"delete":"1"}]
+    },
+
+    "utf8":
+    {"output":{
+        "latex":"\\texttt{U+{$1}}",
+        "asciimath":"\\u{$1}"},
+     "attrs":{
+	 "type":"text",
+	 "group":"editor"},
+     "args":[
+	 {"utf8":"entry","mode":"text"}
+     ]
+    },
+
+    "text":
+    {"output":{
+        "latex":"\\text{{$1}}",
+        "asciimath":"text({$1})"},
+     "attrs":{
+	 "type":"text",
+	 "group":"editor"},
+     "args":[
+	 {"mode":"text"}]
+    },
+
+    "sym_name":
+    {"output":{
+        "latex":"\\backslash\\texttt{{$1}}",
+        "asciimath":"SYMBOL({$1})"},
+     "input":-1,
+     "attrs":{
+	 "type":"symbol",
+	 "group":"editor"},
+     "args":[
+	 {"mode":"symbol","is_bracket":"yes"}]
     },
 
     "abs":
     {"output":{
         "latex":"\\left|{$1}\\right|",
-  "asciimath":"|{$1}|"},
+	"asciimath":"|{$1}|"},
      "keys":["|"],
      "attrs":{
-   "type":"absolutevalue",
-   "group":"functions"},
+	 "type":"absolutevalue",
+	 "group":"functions"},
      "args":[
-   {"delete":"1","is_bracket":"yes"}]
+	 {"delete":"1","is_bracket":"yes"}]
     },
 
     "eval":
     {"output":{
         "latex":"{$1}({$2{,}})",
-  "asciimath":"{$1}({$2{,}})"},
+	"asciimath":"{$1}({$2{,}})"},
      "attrs":{
-   "type":"eval",
-   "group":"functions"},
+	 "type":"eval",
+	 "group":"functions"},
      "args":[
-   {"delete":"2","name":"function"},
-   {"delete":"1","name":"argument"}]
+	 {"delete":"2","name":"function"},
+	 {"delete":"1","name":"argument"}]
     },
 
     "sqrt":
@@ -41,78 +76,78 @@
         "latex":"\\sqrt{{$1}\\phantom{\\tiny{!}}}",
         "asciimath":"sqrt({$1})"},
      "attrs":{
-   "type":"squareroot",
-   "group":"functions"},
+	 "type":"squareroot",
+	 "group":"functions"},
      "args":[
-   {"delete":"1"}]
+	 {"delete":"1"}]
     },
 
     "paren":
     {"output":{
         "latex":"\\left({$1}\\right)",
-  "asciimath":"({$1})"},
+	"asciimath":"({$1})"},
      "keys":["("],
      "attrs":{
-   "type":"bracket",
-   "group":"functions"},
+	 "type":"bracket",
+	 "group":"functions"},
      "ast":{
-   "type":"pass"
+	 "type":"pass"
      },
      "args":[
-   {"delete":"1","is_bracket":"yes"}]
+	 {"delete":"1","is_bracket":"yes"}]
     },
 
     "floor":
     {"output":{
         "latex":"\\lfloor {$1} \\rfloor",
-  "asciimath":"|_ {$1} _|"},
+	"asciimath":"|_ {$1} _|"},
      "attrs":{
-   "type":"floor",
-   "group":"functions"},
+	 "type":"floor",
+	 "group":"functions"},
      "args":[
-   {"delete":"1"}]
+	 {"delete":"1"}]
     },
 
     "factorial":
     {"output":{
         "latex":"{$1}!",
-  "asciimath":"({$1})!"},
+	"asciimath":"({$1})!"},
      "input":1,
      "keys":["!"],
      "attrs":{
-   "type":"factorial",
-   "group":"functions"},
+	 "type":"factorial",
+	 "group":"functions"},
      "args":[
-   {"bracket":"yes","delete":"1"}]
+	 {"bracket":"yes","delete":"1"}]
     },
 
     "exp":
     {"output":{
         "latex":"{{$1}}^{{$2}}",
-  "asciimath":"({$1})^({$2})"},
+	"asciimath":"({$1})^({$2})"},
      "input":1,
      "keys":["^","shift+up"],
      "attrs":{
-   "type":"exponential",
-   "group":"functions"},
+	 "type":"exponential",
+	 "group":"functions"},
      "args":[
-   {"up":"2","bracket":"yes","delete":"1","name":"base"},
-   {"down":"1","delete":"1","name":"exponent","small":"yes"}
+	 {"up":"2","bracket":"yes","delete":"1","name":"base"},
+	 {"down":"1","delete":"1","name":"exponent","small":"yes"}
      ]
     },
 
     "sub":
     {"output":{
         "latex":"{{$1}}_{{$2}}",
-  "asciimath":"{$1}{$2}"},
+	"asciimath":"({$1})_({$2})"},
      "input":1,
      "keys":["_","shift+down"],
      "attrs":{
-   "type":"subscript",
-   "group":"functions"},
+	 "type":"subscript",
+	 "group":"functions"},
      "args":[
-   {"down":"2","bracket":"yes","delete":"1","name":"base"},
-   {"up":"1","delete":"1","name":"subscript","small":"yes"}
+	 {"down":"2","bracket":"yes","delete":"1","name":"base"},
+	 {"up":"1","delete":"1","name":"subscript","small":"yes"}
      ]
     },
 
@@ -120,15 +155,15 @@
     {"output":{
         "latex":"\\dfrac{{$1}}{{$2}}",
         "small_latex":"\\frac{{$1}}{{$2}}",
-  "asciimath":"({$1})/({$2})"},
+	"asciimath":"({$1})/({$2})"},
      "input":1,
      "keys":["/"],
      "attrs":{
-   "type":"fraction",
-   "group":"functions"},
+	 "type":"fraction",
+	 "group":"functions"},
      "args":[
-   {"up":"1","down":"2","name":"numerator"},
-   {"up":"1","down":"2","delete":"1","name":"denominator"}
+	 {"up":"1","down":"2","name":"numerator"},
+	 {"up":"1","down":"2","delete":"1","name":"denominator"}
      ]
     },
 
@@ -136,13 +171,13 @@
     {"output":{
         "latex":"\\displaystyle\\int{{$1}}d{$2}",
         "small_latex":"\\int{{$1}}d{$2}",
-  "asciimath":"int {$1} d{$2}"},
+	"asciimath":"int {$1} d{$2}"},
      "attrs":{
-   "type":"integral",
-   "group":"calculus"},
+	 "type":"integral",
+	 "group":"calculus"},
      "args":[
-   {"delete":"1","name":"integrand"},
-   {"delete":"1","bracket":"yes","name":"variable"}
+	 {"delete":"1","name":"integrand"},
+	 {"delete":"1","bracket":"yes","name":"variable"}
      ]
     },
 
@@ -150,15 +185,15 @@
     {"output":{
         "latex":"\\displaystyle\\int_{{$1}}^{{$2}}{$3}d{$4}",
         "small_latex":"\\int_{{$1}}^{{$2}}{$3}d{$4}",
-  "asciimath":"int_{{$1}}^{{$2}} {$3} d{$4}"},
+	"asciimath":"int_{{$1}}^{{$2}} {$3} d{$4}"},
      "attrs":{
-   "type":"defintegral",
-   "group":"calculus"},
+	 "type":"defintegral",
+	 "group":"calculus"},
      "args":[
-   {"down":"1","up":"2","small":"yes","name":"lower_limit"},
-   {"down":"1","up":"2","small":"yes","name":"upper_limit"},
-   {"down":"1","up":"2","delete":"3","name":"integrand"},
-   {"down":"1","up":"2","bracket":"yes","delete":"4","name":"variable"}
+	 {"down":"1","up":"2","small":"yes","name":"lower_limit"},
+	 {"down":"1","up":"2","small":"yes","name":"upper_limit"},
+	 {"down":"1","up":"2","delete":"3","name":"integrand"},
+	 {"down":"1","up":"2","bracket":"yes","delete":"4","name":"variable"}
      ]
     },
 
@@ -166,13 +201,13 @@
     {"output":{
         "latex":"\\displaystyle\\frac{d{$1}}{d{$2}}",
         "small_latex":"\\frac{d{$1}}{d{$2}}",
-  "asciimath":"diff({$1},{$2})"},
+	"asciimath":"diff({$1},{$2})"},
      "attrs":{
-   "type":"derivative",
-   "group":"calculus"},
+	 "type":"derivative",
+	 "group":"calculus"},
      "args":[
-   {"down":"1","up":"2","bracket":"yes","name":"function"},
-   {"down":"1","up":"2","bracket":"yes","name":"variable"}
+	 {"down":"1","up":"2","bracket":"yes","name":"function"},
+	 {"down":"1","up":"2","bracket":"yes","name":"variable"}
      ]
     },
 
@@ -180,14 +215,14 @@
     {"output":{
         "latex":"\\displaystyle\\sum_{{$1}}^{{$2}}{$3}",
         "small_latex":"\\sum_{{$1}}^{{$2}}{$3}",
-  "asciimath":"sum_{{$1}}^{{$2}} {$3}"},
+	"asciimath":"sum_{{$1}}^{{$2}} {$3}"},
      "attrs":{
-   "type":"summation",
-   "group":"functions"},
+	 "type":"summation",
+	 "group":"functions"},
      "args":[
-   {"down":"1","up":"2","small":"yes","name":"lower_limit"},
-   {"down":"1","up":"2","small":"yes","name":"upper_limit"},
-   {"down":"1","up":"2","delete":"3","bracket":"yes","name":"summand"}
+	 {"down":"1","up":"2","small":"yes","name":"lower_limit"},
+	 {"down":"1","up":"2","small":"yes","name":"upper_limit"},
+	 {"down":"1","up":"2","delete":"3","bracket":"yes","name":"summand"}
      ]
     },
 
@@ -195,130 +230,164 @@
     {"output":{
         "latex":"\\displaystyle\\prod_{{$1}}^{{$2}}{$3}",
         "small_latex":"\\prod_{{$1}}^{{$2}}{$3}",
-  "asciimath":"prod_{{$1}}^{{$2}} {$3}"},
+	"asciimath":"prod_{{$1}}^{{$2}} {$3}"},
      "attrs":{
-   "type":"summation",
-   "group":"functions"},
+	 "type":"product",
+	 "group":"functions"},
      "args":[
-   {"down":"1","up":"2","small":"yes","name":"lower_limit"},
-   {"down":"1","up":"2","small":"yes","name":"upper_limit"},
-   {"down":"1","up":"2","delete":"3","bracket":"yes","name":"summand"}
+	 {"down":"1","up":"2","small":"yes","name":"lower_limit"},
+	 {"down":"1","up":"2","small":"yes","name":"upper_limit"},
+	 {"down":"1","up":"2","delete":"3","bracket":"yes","name":"summand"}
      ]
     },
 
     "root":
     {"output":{
         "latex":"\\sqrt[{$1}]{{$2}\\phantom{\\tiny{!}}}",
-  "asciimath":"nroot({$1},{$2})"},
+	"asciimath":"nroot({$1},{$2})"},
      "attrs":{
-   "type":"root",
-   "group":"functions"},
+	 "type":"root",
+	 "group":"functions"},
      "args":[
-   {"down":"2","up":"1","small":"yes","delete":"1","name":"index"},
-   {"down":"2","up":"1","delete":"1","name":"radicand"}
+	 {"down":"2","up":"1","small":"yes","delete":"1","name":"index"},
+	 {"down":"2","up":"1","delete":"1","name":"radicand"}
      ]
     },
 
     "vec":
     {"output":{
         "latex":"\\left\\langle {$1{,}} \\right\\rangle",
-  "asciimath":"<{$1{,}}>"},
+	"asciimath":"<{$1{,}}>"},
      "keys":["{"],
      "attrs":{
-   "group":"array",
-   "type":"vector"}
+	 "group":"array",
+	 "type":"vector"}
     },
 
     "point":
     {"output":{
         "latex":"\\left( {$1{,}} \\right)",
-  "asciimath":"({$1{,}})"},
+	"asciimath":"({$1{,}})"},
      "keys":["{"],
      "attrs":{
-   "group":"array",
-   "type":"point"}
+	 "group":"array",
+	 "type":"point"}
     },
 
     "mat":
     {"output":{
         "latex":"\\left(\\begin{matrix} {$1{ & }{\\\\}} \\end{matrix}\\right)",
-  "asciimath":"matrix({$1{,}{;}})"},
+	"asciimath":"matrix({$1{,}{;}})"},
      "keys":["["],
      "attrs":{
-   "group":"array",
-   "type":"matrix"}
+	 "group":"array",
+	 "type":"matrix"}
     },
 
     "*":
     {"output":{
         "latex":"\\cdot",
-  "asciimath":"*"},
+	"asciimath":"*"},
      "keys":["*"],
      "attrs":{
-   "group":"operations",
-   "type":"*"},
+	 "group":"operations",
+	 "type":"*"},
      "ast":{
-   "type":"operator"}
+	 "type":"operator"}
     },
+
+    "infinity":{"output":{"latex":"\\infty",
+			  "asciimath":"oo"},
+		"attrs":{"group":"functions",
+			 "type":"infinity"}
+	       },
 
     "_templates":
     {
-  "latex_func":{"output":{"latex":"\\{$name}\\left({$1}\\right)",
-        "asciimath":" {$name}({$1})"},
-    "attrs":{
-        "type":"{$name}",
-        "group":"functions"},
-    "args":[
-        {"delete":"1"}
-    ]},
+	"latex_func":{"output":{"latex":"\\{$name}\\left({$1}\\right)",
+				"asciimath":" {$name}({$1})"},
+		"attrs":{
+		    "type":"{$name}",
+		    "group":"functions"},
+		"args":[
+		    {"delete":"1"}
+		]},
 
-  "func":{"output":{"latex":"{$latex}\\left({$1}\\right)",
-        "asciimath":" {$asciimath}({$1})"},
-    "attrs":{
-        "type":"{$name}",
-        "group":"functions"},
-    "args":[
-        {"delete":"1"}
-    ]},
+	"latex_trig_func":{"output":{"latex":"\\{$name}\\left({$1}\\right)",
+				"asciimath":" {$name}({$1})"},
+		"attrs":{
+		    "type":"{$name}",
+		    "group":"trigonometry"},
+		"args":[
+		    {"delete":"1"}
+		]},
 
-  "char":{"output":{"latex":"\\{$name}",
-         "asciimath":" {$name} "},
-     "attrs":{
-         "group":"symbols",
-         "type":"{$name}"}},
+	"func":{"output":{"latex":"{$latex}\\left({$1}\\right)",
+			  "asciimath":" {$asciimath}({$1})"},
+		"attrs":{
+		    "type":"{$name}",
+		    "group":"{$group}"},
+		"args":[
+		    {"delete":"1"}
+		]},
 
+	"char":{"output":{"latex":"\\{$name}",
+			   "asciimath":" {$name} "},
+		 "attrs":{
+		     "group":"symbols",
+		     "type":"{$name}"}},
 
+	"utf8codepoint":{"output":{"latex":"{\\char\"{$codepoint}}",
+			   "asciimath":" \\u{$codepoint} "},
+			 "attrs":{
+			     "group":"unicode",
+			     "type":"{$name}"},
+			 "ast":{"value":"\\u{$codepoint}"}
+			},
 
-  "binop":{"output":{"latex":"{$latex}",
-         "asciimath":"{$asciimath}"},
-     "keys":["{$type}"],
-     "attrs":{
-         "group":"operations",
-         "type":"{$type}"},
-     "ast":{
-         "type":"operator"}}
+	"utf8char":{"output":{"latex":"\\text{{$char}}",
+			      "asciimath":" {$name} "},
+		    "attrs":{
+			"group":"emoji",
+			"type":"{$name}"}},
+
+	"binop":{"output":{"latex":"{$latex}",
+			   "asciimath":"{$asciimath}"},
+		 "keys":["{$type}"],
+		 "attrs":{
+		     "group":"operations",
+		     "type":"{$type}"},
+		 "ast":{
+		     "type":"operator"}}
     },
+
+    "trig_functions":{
+	"template":"latex_trig_func",
+	"values":["sin","cos","tan","sec","csc","cot","arcsin","arccos","arctan","sinh","cosh","tanh"]},
 
     "functions":{
-  "template":"latex_func",
-  "values":["sin","cos","tan","sec","csc","cot","log","ln","arcsin","arccos","arctan","sinh","cosh","tanh"]},
+	"template":"latex_trig_func",
+	"values":["log","ln"]},
+
+    "utf8chars":{
+	"template":"utf8char",
+	"values":{"banana":{"char":"🍌"},
+		  "pineapple":{"char":"🍍"},
+		  "mango":{"char":"🥭"},
+		  "kiwi":{"char":"🥝"}
+		 }
+    },
 
     "symbols":{
-  "template":"char",
-  "values":["alpha","beta","gamma","delta","epsilon","zeta","eta","theta","iota","kappa","lambda","mu","nu","xi","omicron","pi","rho","sigma","tau","upsilon","phi","chi","psi","omega","Gamma","Delta","Theta","Lambda","Xi","Pi","Sigma","Phi","Psi","Omega"]},
+	"template":"char",
+	"values":["alpha","beta","gamma","delta","epsilon","zeta","eta","theta","iota","kappa","lambda","mu","nu","xi","pi","rho","sigma","tau","upsilon","phi","chi","psi","omega","Gamma","Delta","Theta","Lambda","Xi","Pi","Sigma","Phi","Psi","Omega"]},
 
-    "infinity":{
-        "output":{"latex":"\\infty",
-            "asciimath":"oo"},
-        "attrs":{"group":"symbols",
-            "type":"infinity"}
-    },
     "comparisons":{
-  "template":"binop",
-  "values":{"equal":{"latex":"=","asciimath":" = ","type":"="},
-       "leq":{"latex":"\\leq","asciimath":" <= ","type":"<="},
-       "less":{"latex":"<","asciimath":" < ","type":"<"},
-       "geq":{"latex":"\\geq","asciimath":" >= ","type":">="},
-       "greater":{"latex":">","asciimath":" > ","type":">"},
-      "neq":{"latex":"\\neq","asciimath":" != ","type":"!="}}}
+	"template":"binop",
+	"values":{"equal":{"latex":"=","asciimath":" = ","type":"="},
+		   "leq":{"latex":"\\leq","asciimath":" <= ","type":"<="},
+		   "less":{"latex":"<","asciimath":" < ","type":"<"},
+		   "geq":{"latex":"\\geq","asciimath":" >= ","type":">="},
+		   "greater":{"latex":">","asciimath":" > ","type":">"},
+		  "neq":{"latex":"\\neq","asciimath":" != ","type":"!="}}}
 }

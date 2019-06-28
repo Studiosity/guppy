@@ -93,6 +93,7 @@ var Parser = function(token_types){
     this.prefix = function (id, nud) {
         var s = self.symbol(id);
         s.nud = nud || function () {
+            if(this.value == "-") this.value = "neg";
             return [this.value, [self.expression(70)]];
         };
         return s;
@@ -174,7 +175,18 @@ Parser.prototype.tokenise = function(text){
             }
         }
         if(!ok){
-            return [];
+            if(text.charCodeAt(0) > 128){
+                var c = "";
+                for(var ch of text){
+                    c = ch;
+                    break;
+                }
+                ans.push({"type":"name", "value":c});
+                text = text.substring(c.length);
+            }
+            else{
+                return [];
+            }
         }
     }
     return ans;
@@ -255,8 +267,8 @@ s.nud = function(){
     else return ["var", [this.value]]
 };
 
-module.exports = {"Parser":Parser,
-                  "TextParser":TextParser,
-                  "LaTeXParser":LaTeXParser,
-                  "EParser": EParser};
+export default {"Parser":Parser,
+                "TextParser":TextParser,
+                "LaTeXParser":LaTeXParser,
+                "EParser": EParser};
 

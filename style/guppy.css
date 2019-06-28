@@ -13,6 +13,13 @@
     height: 100px;
     white-space: nowrap;
 }
+.katex .cursor {
+    border-left: 1px solid black !important;
+    width: 0px !important;
+    margin-right: 0 !important;
+    margin-left: -1px;
+    min-height: 1ex;
+}
 
 .guppy_inactive {
     border: 1px solid #bbb;
@@ -43,19 +50,38 @@
 }
 
 
+.guppy_buttons div.settings{
+    background:url('./icons/settings.png') center no-repeat;
+}
+.guppy_buttons div.keyboard{
+    background:url('./icons/keyboard.png') center no-repeat;
+}
+.guppy_buttons div.help{
+    background:url('./icons/help.png') center no-repeat;
+}
+.guppy_buttons div.symbols{
+    background:url('./icons/symbols.png') center no-repeat;
+}
+.guppy_buttons div.send{
+    background:url('./icons/send.png') center no-repeat;
+}
+
 .guppy_buttons {
     position:absolute;
     bottom:0;
     right:0;
     padding:0 3px 3px 0;
+    text-align:right;
 }
 
-.guppy_buttons img{
+.guppy_buttons div.guppy-button{
+    background-size: 40px 40px;
     cursor:pointer;
     height:40px;
     width:40px;
     padding:3px;
     opacity: 0.5;
+    display: inline-block;
 }
 
 .guppy_buttons img:hover{

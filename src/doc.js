@@ -1,9 +1,9 @@
-var katex = require('../lib/katex/katex-modified.min.js');
-var AST = require('./ast.js');
-var Symbols = require('./symbols.js');
-var Utils = require('./utils.js');
-var Parsers = require('./parser.js');
-var Version = require('./version.js');
+import AST from './ast.js';
+import Parsers from './parser.js';
+import Symbols from './symbols.js';
+import Utils from './utils.js';
+import Version from './version.js';
+import katex from '../lib/katex/katex-modified.min.js';
 
 /**
    @class
@@ -100,6 +100,9 @@ Doc.prototype.import_latex = function(text, syms, s2n){
 }
 
 Doc.prototype.import_ast = function(ast, syms, s2n){
+    if(typeof ast == "string"){
+        ast = JSON.parse(ast);
+    }
     syms = syms || Symbols.symbols;
     s2n = s2n || Symbols.symbol_to_node;
     var doc = AST.to_xml(ast, syms, s2n);
@@ -267,13 +270,6 @@ Doc.prototype.manual_render = function(t,n,r){
     return ans;
 }
 
-/**
-    Render all guppy documents on the page.
-    @param {string} type - The type of content to render
-    @param {string} [delim] - The string to delimit mathematical symbols
-    @param {string} [root_node] - The DOM Element object within which to do the rendering
-    @memberof Doc
-*/
 Doc.render_all = function(t, delim, root_node){
     var l,i,n,d,s,ans = [];
     if(!t || t == "xml"){
@@ -364,14 +360,15 @@ Doc.render_all = function(t, delim, root_node){
     Render a given document into a specified HTML element.
     @param {string} doc - A GuppyXML string to be rendered
     @param {string} target_id - The ID of the HTML element to render into
+    @param {string} type - Optional type of the doc provided. Default is `xml`
     @memberof Doc
 */
-Doc.render = function(doc, target_id){
-    var d = new Doc(doc);
+Doc.render = function(doc, target_id, type){
+    var d = new Doc(doc, type);
     var target = document.getElementById(target_id);
     katex.render(d.get_content("latex"), target);
     return {"container":target, "doc":d};
 }
 
 
-module.exports = Doc;
+export default Doc;
