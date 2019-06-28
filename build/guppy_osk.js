@@ -2274,7 +2274,7 @@ var GuppyOSK = (function () {
 	    tab_bar.appendChild(li);
 	    for (s in grouped[g]) {
 	      var sym = grouped[g][s];
-	      if (typeof sym != 'function') {
+	      if (typeof sym != 'function' && typeof sym.name == 'string') {
 	        if (sym['break']) {
 	          group_elt.appendChild(elt("br"));
 	        } else if (sym['tab']) {

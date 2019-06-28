@@ -4142,7 +4142,7 @@ var Guppy = (function () {
         "blank_caret": "",
         "blank_placeholder": "[?]",
         "blacklist": [],
-        "buttons": ["osk", "settings", "symbols", "controls", "send"],
+        "buttons": ["osk", "settings", "symbols", "controls"],
         "cliptype": "latex"
     };
 
