@@ -393,7 +393,7 @@ var Guppy = (function () {
     		asciimath: "oo"
     	},
     	attrs: {
-    		group: "functions",
+    		group: "symbols",
     		type: "infinity"
     	}
     };
@@ -460,16 +460,6 @@ var Guppy = (function () {
     			value: "\\u{$codepoint}"
     		}
     	},
-    	utf8char: {
-    		output: {
-    			latex: "\\text{{$char}}",
-    			asciimath: " {$name} "
-    		},
-    		attrs: {
-    			group: "emoji",
-    			type: "{$name}"
-    		}
-    	},
     	binop: {
     		output: {
     			latex: "{$latex}",
@@ -492,23 +482,6 @@ var Guppy = (function () {
     var functions = {
     	template: "latex_trig_func",
     	values: ["log", "ln"]
-    };
-    var utf8chars = {
-    	template: "utf8char",
-    	values: {
-    		banana: {
-    			char: "🍌"
-    		},
-    		pineapple: {
-    			char: "🍍"
-    		},
-    		mango: {
-    			char: "🥭"
-    		},
-    		kiwi: {
-    			char: "🥝"
-    		}
-    	}
     };
     var symbols = {
     	template: "char",
@@ -608,7 +581,6 @@ var Guppy = (function () {
     	_templates: _templates,
     	trig_functions: trig_functions,
     	functions: functions,
-    	utf8chars: utf8chars,
     	symbols: symbols,
     	comparisons: comparisons
     };

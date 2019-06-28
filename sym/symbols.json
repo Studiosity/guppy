@@ -298,7 +298,7 @@
 
     "infinity":{"output":{"latex":"\\infty",
 			  "asciimath":"oo"},
-		"attrs":{"group":"functions",
+		"attrs":{"group":"symbols",
 			 "type":"infinity"}
 	       },
 
@@ -345,12 +345,6 @@
 			 "ast":{"value":"\\u{$codepoint}"}
 			},
 
-	"utf8char":{"output":{"latex":"\\text{{$char}}",
-			      "asciimath":" {$name} "},
-		    "attrs":{
-			"group":"emoji",
-			"type":"{$name}"}},
-
 	"binop":{"output":{"latex":"{$latex}",
 			   "asciimath":"{$asciimath}"},
 		 "keys":["{$type}"],
@@ -368,15 +362,6 @@
     "functions":{
 	"template":"latex_trig_func",
 	"values":["log","ln"]},
-
-    "utf8chars":{
-	"template":"utf8char",
-	"values":{"banana":{"char":"🍌"},
-		  "pineapple":{"char":"🍍"},
-		  "mango":{"char":"🥭"},
-		  "kiwi":{"char":"🥝"}
-		 }
-    },
     "symbols":{
 	"template":"char",
 	"values":["alpha","beta","gamma","delta","epsilon","zeta","eta","theta","iota","kappa","lambda","mu","nu","xi","pi","rho","sigma","tau","upsilon","phi","chi","psi","omega","Gamma","Delta","Theta","Lambda","Xi","Pi","Sigma","Phi","Psi","Omega"]},
