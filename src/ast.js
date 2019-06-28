@@ -216,6 +216,7 @@ AST.eval = function(ast, functions, parent){
     if(!functions["_default"]) functions["_default"] = function(name, args){ throw Error("Function not implemented: " + name + "(" + args + ")");}
     if(!ast[1]) return null;
 
+
     var args = []
     for(var i = 0; i < ast[1].length; i++){
         if(Object.prototype.toString.call(ast[1][i]) === '[object Array]'){

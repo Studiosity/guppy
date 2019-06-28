@@ -69,6 +69,7 @@ Guppy.prototype.set_buttons = function(){
     this.buttons_div = document.createElement("div");
     this.buttons_div.setAttribute("class","guppy_buttons");
     this.buttons_div.setAttribute("id","guppy_buttons");
+
     if(buttons){
         for(var i = 0; i < buttons.length; i++){
             if(buttons[i] == "osk" && Settings.osk){

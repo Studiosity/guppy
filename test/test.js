@@ -7,10 +7,10 @@ var tests = [
     {
 	"description":"Done",
 	"type":"asciimath",
-	"expected":"margaret",
+	"expected":"DONE",
 	"run":function(g){
 	    do_keys(['enter']);
-	 }
+	}
     },
     {
 	"description":"Basic",
@@ -1028,7 +1028,7 @@ Guppy.event("error",function(e){e.target.import_xml("<m><e>"+e.message+"</e></m>
 Guppy.event("left_end",function(e){e.target.import_xml("<m><e>LEFT</e></m>");});
 Guppy.event("focus",function(e){if(e.focused) focuses++; else unfocuses++;});
 Guppy.event("right_end",function(e){e.target.import_xml("<m><e>RIGHT</e></m>");});
-Guppy.event("done",function(e){e.target.import_xml("<m><e>margaret</e></m>");});
+Guppy.event("done",function(e){e.target.import_xml("<m><e>DONE</e></m>");});
 Guppy.event("change",function(e){});
 test_guppy = {};
 
@@ -1055,7 +1055,6 @@ test_guppy = {};
 		    observed = observed.replace("/ /g","");
 		}
 		//console.log('o=',observed,'ty=',t.type,'e=',t.expected);
-    console.log(t.expected)
 		var ex = expect(observed);
 		if(ex.check) ex.check(t);
 		else ex.toEqual(t.expected);

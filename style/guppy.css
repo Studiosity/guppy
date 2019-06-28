@@ -20,6 +20,13 @@
     margin-left: -1px;
     min-height: 1ex;
 }
+.katex .cursor {
+    border-left: 1px solid black !important;
+    width: 0px !important;
+    margin-right: 0 !important;
+    margin-left: -1px;
+    min-height: 1ex;
+}
 
 .guppy_inactive {
     border: 1px solid #bbb;

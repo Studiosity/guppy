@@ -64,7 +64,6 @@ function make_tabs(tabbar, element){
             // var doubletap = false;
             // if((timesince < 600) && (timesince > 100)) doubletap = true;
             //GuppyOSK.lasttap = now;
-
             var target = e.target;
             while(target.tagName.toLowerCase() != "a") target = target.parentNode;
             for(var i = 0; i < headers.length; i++){
@@ -81,6 +80,7 @@ function make_tabs(tabbar, element){
             //         target.classList.add("fav_tab");
             //         GuppyOSK.config.goto_tab = tabname;
             // }
+            e.preventDefault();
             return false;
         });
     }
@@ -163,7 +163,6 @@ GuppyOSK.prototype.attach = function(guppy, target){
     // tab_bar.addEventListener("touchmove",function(e){
     // 	var touchobj = e.changedTouches[0];
     // 	var n = touchobj.target;
-
     // });
     var sl = elt("div",{"class":"scroller-left disabled"},"<i class=\"left\"></i>");
     var sr = elt("div",{"class":"scroller-right"},"<i class=\"right\"></i>");
