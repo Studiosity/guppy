@@ -282,14 +282,6 @@ var tests = [
 	}
     },
     {
-	"description":"backslash",
-	"type":"asciimath",
-	"expected":" theta ",
-	"run":function(g){
-	    do_keys(['\\','t','h','e','t','a','enter']);
-	}
-    },
-    {
 	"description":"theta",
 	"type":"asciimath",
 	"expected":" theta ",
@@ -311,22 +303,6 @@ var tests = [
 	"expected":"(x+1)^(2)",
 	"run":function(g){
 	    do_keys(['x','+','1','shift+left','shift+left','shift+left','^','2']);
-	}
-    },
-    {
-	"description":"text selection",
-	"type":"asciimath",
-	"expected":"text(ad)",
-	"run":function(g){
-	    do_keys(['t','e','x','t','a','b','c','shift+left','shift+left','d']);
-	}
-    },
-    {
-	"description":"text copy",
-	"type":"asciimath",
-	"expected":"text(abcc)",
-	"run":function(g){
-	    do_keys(['t','e','x','t','a','b','c','shift+left','mod+c','right','mod+v']);
 	}
     },
     {
@@ -564,14 +540,6 @@ var tests = [
 	"expected":'["defintegral",[["val",[1]],["val",[2]],["+",[["exponential",[["var",["x"]],["val",[2]]]],["val",[1]]]],["var",["x"]]]]',
 	"run":function(g){
 	    do_keys(['d','e','f','i','1','right','2','right','x','^','2','right','+','1','right','x']);
-	}
-    },
-    {
-	"description":"export_text text node",
-	"type":"text",
-	"expected":"text(abc)",
-	"run":function(g){
-	    do_keys(['t','e','x','t','a','b','c']);
 	}
     },
     {
@@ -947,22 +915,6 @@ var tests = [
 	"expected":3,
 	"run":function(g){
 	    do_keys(['1','+','2']);
-	}
-    },
-    {
-	"description":"text weird chars",
-	"type":"text",
-	"expected":"text(1+,!@a\"')",
-	"run":function(g){
-	    do_keys(['t','e','x','t','1','+',',','!','@','a','"',"'"]);
-	}
-    },
-    {
-	"description":"utf8 basic",
-	"type":"ast",
-	"expected":'["var",["✈"]]',
-	"run":function(g){
-	    do_keys(['u','t','f','8','2','7','0','8','enter']);
 	}
     },
     {

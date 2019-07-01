@@ -16,48 +16,6 @@ var Guppy = (function () {
     		"delete": "1"
     	}]
     };
-    var utf8 = {
-    	output: {
-    		latex: "\\texttt{U+{$1}}",
-    		asciimath: "\\u{$1}"
-    	},
-    	attrs: {
-    		type: "text",
-    		group: "editor"
-    	},
-    	args: [{
-    		utf8: "entry",
-    		mode: "text"
-    	}]
-    };
-    var text = {
-    	output: {
-    		latex: "\\text{{$1}}",
-    		asciimath: "text({$1})"
-    	},
-    	attrs: {
-    		type: "text",
-    		group: "editor"
-    	},
-    	args: [{
-    		mode: "text"
-    	}]
-    };
-    var sym_name = {
-    	output: {
-    		latex: "\\backslash\\texttt{{$1}}",
-    		asciimath: "SYMBOL({$1})"
-    	},
-    	input: -1,
-    	attrs: {
-    		type: "symbol",
-    		group: "editor"
-    	},
-    	args: [{
-    		mode: "symbol",
-    		is_bracket: "yes"
-    	}]
-    };
     var abs = {
     	output: {
     		latex: "\\left|{$1}\\right|",
@@ -387,16 +345,6 @@ var Guppy = (function () {
     		type: "matrix"
     	}
     };
-    var infinity = {
-    	output: {
-    		latex: "\\infty",
-    		asciimath: "oo"
-    	},
-    	attrs: {
-    		group: "symbols",
-    		type: "infinity"
-    	}
-    };
     var _templates = {
     	latex_func: {
     		output: {
@@ -487,6 +435,16 @@ var Guppy = (function () {
     	template: "char",
     	values: ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega", "Gamma", "Delta", "Theta", "Lambda", "Xi", "Pi", "Sigma", "Phi", "Psi", "Omega"]
     };
+    var infinity = {
+    	output: {
+    		latex: "\\infty",
+    		asciimath: "oo"
+    	},
+    	attrs: {
+    		group: "symbols",
+    		type: "infinity"
+    	}
+    };
     var comparisons = {
     	template: "binop",
     	values: {
@@ -526,9 +484,6 @@ var Guppy = (function () {
     	_version: _version,
     	_name: _name,
     	norm: norm,
-    	utf8: utf8,
-    	text: text,
-    	sym_name: sym_name,
     	abs: abs,
     	"eval": {
     		output: {
@@ -577,11 +532,11 @@ var Guppy = (function () {
     			type: "operator"
     		}
     	},
-    	infinity: infinity,
     	_templates: _templates,
     	trig_functions: trig_functions,
     	functions: functions,
     	symbols: symbols,
+    	infinity: infinity,
     	comparisons: comparisons
     };
 
@@ -64773,11 +64728,11 @@ var Guppy = (function () {
         @memberof Guppy
     */
     cov_1ywzz2v7dr.s[445]++;
-    Guppy.prototype.import_text = function (text$$1) {
+    Guppy.prototype.import_text = function (text) {
         cov_1ywzz2v7dr.f[47]++;
         cov_1ywzz2v7dr.s[446]++;
 
-        return this.engine.import_text(text$$1);
+        return this.engine.import_text(text);
     };
 
     /**
@@ -64789,11 +64744,11 @@ var Guppy = (function () {
         @memberof Guppy
     */
     cov_1ywzz2v7dr.s[447]++;
-    Guppy.prototype.import_latex = function (text$$1) {
+    Guppy.prototype.import_latex = function (text) {
         cov_1ywzz2v7dr.f[48]++;
         cov_1ywzz2v7dr.s[448]++;
 
-        return this.engine.import_latex(text$$1);
+        return this.engine.import_latex(text);
     };
 
     /**

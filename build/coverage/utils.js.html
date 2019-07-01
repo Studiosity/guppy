@@ -25,9 +25,9 @@
         <span class='fraction'>43/43</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">86.21% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>29/29</span>
+        <span class='fraction'>25/29</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -117,12 +117,12 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">60x</span>
-<span class="cline-any cline-yes">55x</span>
+<span class="cline-any cline-yes">59x</span>
+<span class="cline-any cline-yes">54x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -134,18 +134,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4604x</span>
+<span class="cline-any cline-yes">4282x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">192x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">186x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -153,16 +149,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1512x</span>
-<span class="cline-any cline-yes">1512x</span>
-<span class="cline-any cline-yes">417x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1400x</span>
+<span class="cline-any cline-yes">1400x</span>
+<span class="cline-any cline-yes">360x</span>
 <span class="cline-any cline-yes">89x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">328x</span>
-<span class="cline-any cline-yes">328x</span>
-<span class="cline-any cline-yes">1212x</span>
+<span class="cline-any cline-yes">271x</span>
+<span class="cline-any cline-yes">271x</span>
+<span class="cline-any cline-yes">1041x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1423x</span>
+<span class="cline-any cline-yes">1311x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -194,7 +194,7 @@ Utils.path_to = function(n){
 }
 &nbsp;
 Utils.is_text = function(nn){
-    return nn.parentNode.hasAttribute("mode") &amp;&amp; (nn.parentNode.getAttribute("mode") == "text" || nn.parentNode.getAttribute("mode") == "symbol");
+    return nn.parentNode.hasAttribute("mode") &amp;&amp; (<span class="branch-1 cbranch-no" title="branch not covered" >nn.parentNode.getAttribute("mode") == "text" </span>|| <span class="branch-2 cbranch-no" title="branch not covered" >nn.parentNode.getAttribute("mode") == "symbol")</span>;
 }
 &nbsp;
 Utils.is_char = function(nn){
@@ -205,11 +205,11 @@ Utils.is_char = function(nn){
 }
 &nbsp;
 Utils.is_symbol = function(nn){
-    return nn.parentNode.getAttribute("mode") &amp;&amp; nn.parentNode.getAttribute("mode") == "symbol";
+    return nn.parentNode.getAttribute("mode") &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >nn.parentNode.getAttribute("mode") == "symbol";</span>
 }
 &nbsp;
 Utils.is_utf8entry = function(nn){
-    return nn.parentNode.getAttribute("utf8") &amp;&amp; nn.parentNode.getAttribute("utf8") == "entry";
+    return nn.parentNode.getAttribute("utf8") &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >nn.parentNode.getAttribute("utf8") == "entry";</span>
 }
 &nbsp;
 Utils.is_small = function(nn){
@@ -232,7 +232,7 @@ export default Utils;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jun 28 2019 16:59:14 GMT+0800 (CST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jul 01 2019 09:28:53 GMT+0800 (CST)
 </div>
 </div>
 <script src="prettify.js"></script>
