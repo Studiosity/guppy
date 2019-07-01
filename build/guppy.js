@@ -5845,14 +5845,16 @@ var Guppy = (function () {
         var b = document.createElement("div");
         b.setAttribute("class", "guppy-button " + cls);
         parent.appendChild(b);
+        var callback = function callback(e) {
+            cb(e);
+            if (e.cancelBubble != null) e.cancelBubble = true;
+            if (e.stopPropagation) e.stopPropagation();
+            e.preventDefault();
+            return false;
+        };
         if (cb) {
-            b.addEventListener("mouseup", function (e) {
-                cb(e);
-                if (e.cancelBubble != null) e.cancelBubble = true;
-                if (e.stopPropagation) e.stopPropagation();
-                e.preventDefault();
-                return false;
-            }, false);
+            b.addEventListener("mouseup", callback, false);
+            b.addEventListener("touchend", callback, false);
         }
         return b;
     };
