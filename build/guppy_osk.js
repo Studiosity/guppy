@@ -2127,21 +2127,26 @@ var GuppyOSK = (function () {
 	    if (j != 0) tabs[j].style.display = "none";
 	    var header = headers[j];
 	    click_listener(header, function (e) {
-	      GuppyOSK.kb_is_scroll = false;
+	      if (GuppyOSK.kb_is_scroll) {
+	        GuppyOSK.kb_is_scroll = false;
+	      } else {
+	        var target = e.target;
+	        while (target.tagName.toLowerCase() != "a") {
+	          target = target.parentNode;
+	        }for (var i = 0; i < headers.length; i++) {
+	          tabs[i].style.display = "none";
+	          headers[i].classList.remove("active_tab");
+	        }
+	        target.closest('a').classList.add("active_tab");
+	        element.querySelector(target.closest('a').getAttribute("href")).style.display = "block";
+	      }
+
 	      // var now = new Date().getTime();
 	      // var timesince = now - GuppyOSK.lasttap;
 	      // var doubletap = false;
 	      // if((timesince < 600) && (timesince > 100)) doubletap = true;
 	      //GuppyOSK.lasttap = now;
-	      var target = e.target;
-	      while (target.tagName.toLowerCase() != "a") {
-	        target = target.parentNode;
-	      }for (var i = 0; i < headers.length; i++) {
-	        tabs[i].style.display = "none";
-	        headers[i].classList.remove("active_tab");
-	      }
-	      target.closest('a').classList.add("active_tab");
-	      element.querySelector(target.closest('a').getAttribute("href")).style.display = "block";
+
 	      // if(doubletap){
 	      //         let tabname = target.getAttribute("href").substring(1);
 	      //         for(var i = 0; i < headers.length; i++){
