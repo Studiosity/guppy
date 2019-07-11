@@ -229,9 +229,9 @@
   padding: 2px;
   display: none;
   overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-y: scroll;
   width: 99vw;
-  height: 145px;
+  height: 100px;
   white-space: nowrap;
 }
 
@@ -248,4 +248,37 @@
   vertical-align: text-bottom;
   color: #999;
   font-size: .8em;
+}
+
+/*Add fading to scroll list*/
+.tabbar .scroller-left {
+  position: absolute;
+  width: 40px;
+  height: 58px;
+  top: 0;
+  left: 0;
+  background: linear-gradient(to right, rgba(242,247,247, 1), rgba(242,247,247, 0.2));
+  z-index: 9;
+  pointer-events: none;
+}
+
+.tabbar .scroller-left.disabled {
+  height: 0 !important;
+  width: 0 !important;
+}
+
+.tabbar .scroller-right {
+  position: absolute;
+  width: 40px;
+  height: 58px;
+  top: 0;
+  right: 0;
+  background: linear-gradient(to left, rgba(242,247,247, 1), rgba(242,247,247, 0.2));
+  z-index: 9;
+  pointer-events: none;
+}
+
+.tabbar .scroller-right.disabled {
+  height: 0 !important;
+  width: 0 !important;
 }
