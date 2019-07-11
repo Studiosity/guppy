@@ -229,9 +229,9 @@
   padding: 2px;
   display: none;
   overflow-x: scroll;
-  overflow-y: scroll;
+  overflow-y: hidden;
   width: 99vw;
-  height: 100px;
+  height: 145px;
   white-space: nowrap;
 }
 
