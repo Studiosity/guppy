@@ -14,9 +14,26 @@
         console.log(text)
       }
 
+      function change(event) {
+        try {
+          const value = event.target.text()
+          const sendButton = document.getElementsByClassName('send')[0]
+          if (sendButton) {
+            if (value && value !== '()') {
+              sendButton.style.backgroundImage ='url(/build/icons/send_active.png)'
+            } else {
+              sendButton.style.backgroundImage =  "url(/build/icons/send_inactive.png)"
+            }
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
       Guppy.configure('buttons', ['send'])
       Guppy.use_osk(new GuppyOSK({"attach":"focus"}));
       Guppy.event('done', done)
+      Guppy.event('change', change)
       var g1 = new Guppy("guppy1");
       g1.activate()
      };
