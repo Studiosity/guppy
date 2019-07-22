@@ -70,7 +70,7 @@
     background:url('./icons/symbols.png') center no-repeat;
 }
 .guppy_buttons div.send{
-    background:url('./icons/send.png') center no-repeat;
+    background:url('./icons/send_inactive.png') center no-repeat;
 }
 
 .guppy_buttons {
@@ -82,10 +82,10 @@
 }
 
 .guppy_buttons div.guppy-button{
-    background-size: 40px 40px;
+    background-size: 28px 28px;
     cursor:pointer;
-    height:40px;
-    width:40px;
+    height:28px;
+    width:28px;
     padding:3px;
     opacity: 0.5;
     display: inline-block;
