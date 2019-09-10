@@ -2264,7 +2264,7 @@ var GuppyOSK = (function () {
 	    var group = syms[s].attrs.group;
 	    if (!grouped[group]) grouped[group] = [];
 	    var display = "";
-	    if (s == "text") display = GuppyOSK.text_blank;else display = syms[s].output.latex.replace(/\{\$[0-9]+(\{[^}]+\})*\}/g, GuppyOSK.blank);
+	    if (s.includes("text_")) display = '\\text{text} ' + GuppyOSK.blank;else display = syms[s].output.latex.replace(/\{\$[0-9]+(\{[^}]+\})*\}/g, GuppyOSK.blank);
 	    if (group == "calculus" || group == "functions") display = "\\small " + display;
 	    grouped[group].push({ "name": s, "latex": display });
 	  }
@@ -2275,6 +2275,7 @@ var GuppyOSK = (function () {
 	    var group_elt = elt("div", { "class": "guppy_osk_group_box", "id": g });
 	    if (g == "array") matrix_controls = group_elt;
 	    var li = elt("li", {}, "<a href='#" + g + "' id='guppy_osk_" + g + "_tab'><span class='tab-icon'></span>" + tab_display_name(g) + "</a>");
+
 	    katex.render(GuppyOSK.group_headers[g], li.getElementsByTagName('span')[0]);
 	    tab_bar.appendChild(li);
 	    for (s in grouped[g]) {

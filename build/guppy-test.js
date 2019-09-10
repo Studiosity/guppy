@@ -445,6 +445,32 @@ var Guppy = (function () {
     		type: "infinity"
     	}
     };
+    var text_function = {
+    	output: {
+    		latex: "\\text{{$1}}",
+    		asciimath: "text({$1})"
+    	},
+    	attrs: {
+    		type: "text",
+    		group: "functions"
+    	},
+    	args: [{
+    		mode: "text"
+    	}]
+    };
+    var text_trig = {
+    	output: {
+    		latex: "\\text{{$1}}",
+    		asciimath: "text({$1})"
+    	},
+    	attrs: {
+    		type: "text",
+    		group: "trigonometry"
+    	},
+    	args: [{
+    		mode: "text"
+    	}]
+    };
     var comparisons = {
     	template: "binop",
     	values: {
@@ -537,6 +563,8 @@ var Guppy = (function () {
     	functions: functions,
     	symbols: symbols,
     	infinity: infinity,
+    	text_function: text_function,
+    	text_trig: text_trig,
     	comparisons: comparisons
     };
 

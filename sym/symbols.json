@@ -11,7 +11,6 @@
      "args":[
 	 {"delete":"1"}]
     },
-
     "abs":
     {"output":{
         "latex":"\\left|{$1}\\right|",
@@ -330,7 +329,32 @@
         "attrs":{"group":"symbols",
              "type":"infinity"}
            },
-
+    "text_function": {
+      "output":{
+        "latex": "\\text{{$1}}",
+        "asciimath": "text({$1})"
+      },
+      "attrs":{
+        "type": "text",
+        "group": "functions"
+      },
+      "args":[{
+        "mode": "text"
+      }]
+    },
+    "text_trig": {
+      "output":{
+        "latex": "\\text{{$1}}",
+        "asciimath": "text({$1})"
+      },
+      "attrs":{
+        "type": "text",
+        "group": "trigonometry"
+      },
+      "args":[{
+        "mode": "text"
+      }]
+    },
     "comparisons":{
 	"template":"binop",
 	"values":{"equal":{"latex":"=","asciimath":" = ","type":"="},

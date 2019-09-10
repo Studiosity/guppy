@@ -19,3 +19,4 @@
 - Move the `infinity` input from the `Editor` tab to the new `Symbols` tab
 - Fix equation editor inputs 2 same character when pressing once
 - Fix the text input will change the cursor position when tap on the window
+- Add `text` input into `Functions` and `Trigonometry`
